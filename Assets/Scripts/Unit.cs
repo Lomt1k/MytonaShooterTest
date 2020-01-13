@@ -15,7 +15,6 @@ public class Unit : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
     }
 
     // Update is called once per frame
@@ -73,6 +72,12 @@ public class Unit : MonoBehaviour
         health -= damage;
         print($"{attacker.gameObject.name} нанес {damage} единиц урона {gameObject.name}. Осталось HP: {health} ");
         if (health <= 0) Die();
+
+        //Health UI
+        if (!isBot)
+        {
+            ScreenGUI.instance.UpdateHealthBar(health);
+        }
     }
 
     /// <summary>

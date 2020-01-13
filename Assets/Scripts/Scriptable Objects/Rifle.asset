@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f3ee3aef56dabe949b00a7d6b04110e5, type: 3}
   m_Name: Rifle
   m_EditorClassIdentifier: 
+  name: "\u0412\u0438\u043D\u0442\u043E\u0432\u043A\u0430"
   damage: 8
   bulletsPerShot: 1
   ClipSize: 25

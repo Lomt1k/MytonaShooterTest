@@ -5,7 +5,7 @@ using UnityEngine;
 [CreateAssetMenu(menuName = "Data/WeaponItem")]
 public class WeaponData : ScriptableObject
 {
-    public string name;
+    public new string name;
     public int damage; //урон от 1 пули
     public int bulletsPerShot = 1; //количество пуль за один выстрел
     public int ClipSize; // количество патронов в обойме

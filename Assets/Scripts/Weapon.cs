@@ -56,6 +56,7 @@ public abstract class Weapon : MonoBehaviour
     {
         _ammo--;
         _lastShotTime = Time.time;
+        ScreenGUI.instance.UpdateAmmoText(_weaponOwner);
         print(_weaponOwner.gameObject.name + " выстрелил из " + weaponData.name);
     }
 
@@ -81,9 +82,9 @@ public abstract class Weapon : MonoBehaviour
         yield return new WaitForSeconds(weaponData.reloadTime);
         isReloading = false;
         Ammo = weaponData.ClipSize;
+        ScreenGUI.instance.UpdateAmmoText(_weaponOwner);
         print(_weaponOwner.gameObject.name + " закончил перезарядку " + weaponData.name);
     }
-
 
 
 }
