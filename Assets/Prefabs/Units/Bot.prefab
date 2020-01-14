@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 3338232338448281878}
   - component: {fileID: 3338232338448281877}
   - component: {fileID: 3338232338448281876}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Glasses
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -105,7 +105,7 @@ GameObject:
   - component: {fileID: 3338232338609928078}
   - component: {fileID: 3338232338609928077}
   - component: {fileID: 4350358437962209815}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Rifle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -215,7 +215,7 @@ GameObject:
   - component: {fileID: 3338232339665648927}
   - component: {fileID: 3338232339665648912}
   - component: {fileID: 3338232339665648897}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Bot
   m_TagString: Unit
   m_Icon: {fileID: 0}
@@ -357,7 +357,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3338232339749023466}
   - component: {fileID: 3338232339749023467}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: WeaponHolder
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -400,7 +400,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5730812209151562835}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: shotOrigin
   m_TagString: Untagged
   m_Icon: {fileID: 0}

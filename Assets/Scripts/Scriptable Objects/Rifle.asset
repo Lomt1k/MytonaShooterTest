@@ -15,6 +15,10 @@ MonoBehaviour:
   name: "\u0412\u0438\u043D\u0442\u043E\u0432\u043A\u0430"
   damage: 8
   bulletsPerShot: 1
-  ClipSize: 25
+  magazineAmount: 25
   fireRate: 4
   reloadTime: 5
+  bulletPrefab: {fileID: 190257347837828123, guid: 43849881309ea3e47a4a1aa4e1fbc272,
+    type: 3}
+  bulletLifetime: 1
+  bulletSpeed: 2500

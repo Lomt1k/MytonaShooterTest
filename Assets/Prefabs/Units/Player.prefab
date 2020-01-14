@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 7466078489177895038}
   - component: {fileID: 7466078489177895037}
   - component: {fileID: 7466078489177895036}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Glasses
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -102,7 +102,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7466078490009956226}
   - component: {fileID: 7466078490009956227}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: WeaponHolder
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -150,7 +150,7 @@ GameObject:
   - component: {fileID: 7466078490395262067}
   - component: {fileID: 7466078490395262071}
   - component: {fileID: 7466078490395262072}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Player
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -249,6 +249,7 @@ MonoBehaviour:
   characterController: {fileID: 7466078490395262072}
   weaponHolder: {fileID: 7466078490009956227}
   health: 100
+  isBot: 0
 --- !u!143 &7466078490395262072
 CharacterController:
   m_ObjectHideFlags: 0
@@ -278,6 +279,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Rifle
+      objectReference: {fileID: 0}
+    - target: {fileID: 815377813719514020, guid: 0220e48358ff04648ad9078b0973383e,
+        type: 3}
+      propertyPath: m_Layer
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 815377813719514024, guid: 0220e48358ff04648ad9078b0973383e,
         type: 3}
@@ -338,6 +344,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalScale.z
       value: 1.1764704
+      objectReference: {fileID: 0}
+    - target: {fileID: 8632587429419775520, guid: 0220e48358ff04648ad9078b0973383e,
+        type: 3}
+      propertyPath: m_Layer
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 815377813719514022, guid: 0220e48358ff04648ad9078b0973383e,
         type: 3}

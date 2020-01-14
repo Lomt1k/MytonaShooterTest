@@ -30,7 +30,7 @@ public class ScreenGUI : MonoBehaviour
         Weapon weap = unit.weaponHolder.armedWeapon;
         if (weap != null)
         {
-            ammoText.text = $"{weap.Ammo} / {weap.weaponData.ClipSize}";
+            ammoText.text = $"{weap.Ammo} / {weap.weaponData.magazineAmount}";
         }
         else ammoText.text = "";
     }
