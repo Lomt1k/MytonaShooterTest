@@ -5,12 +5,6 @@ using UnityEngine;
 public class Rifle : Weapon
 {
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
     protected override void Shot()
     {
         base.Shot();
@@ -21,9 +15,14 @@ public class Rifle : Weapon
         {
             if (hit.transform.gameObject.CompareTag("Unit"))
             {
-                hit.transform.gameObject.GetComponent<Unit>().TakeDamage(_weaponOwner, this, weaponData.damage);
+                hit.transform.gameObject.GetComponent<Unit>()?.TakeDamage(_weaponOwner, this, weaponData.damage);
             }
         }
+        //создаем пулю (визуал)
+        GameObject bullet = Instantiate(weaponData.bulletPrefab, shotOrigin.position, weaponData.bulletPrefab.transform.rotation);
+        bullet.transform.localEulerAngles += new Vector3(0f, _weaponOwner.transform.localEulerAngles.y, 0f);
+        bullet.GetComponent<Rigidbody>().AddForce(bullet.transform.up * weaponData.bulletSpeed);
+        Destroy(bullet, weaponData.bulletLifetime);
 
     }
 }

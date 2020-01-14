@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Unit : MonoBehaviour
 {
@@ -8,8 +9,12 @@ public class Unit : MonoBehaviour
     public CharacterController characterController;
     public WeaponHolder weaponHolder;
     public int health = 100;
+    public Slider healthBar; //hp бар над ботом
     public bool isBot = false; //юнит является ботом
-    public GameObject[] weapons; //оружие, которое юнит получает при спавне
+    public GameObject[] spawnWeapons; //оружие, которое юнит получает при спавне
+    public GameObject deadBodyPrefab; //"труп юнита", который спавнится в момент смерти юнита
+    public float deadBodyLifetime = 3f; //время, которое будет существовать труп после смерти юнита
+    public float respawnTime = 5f; //задержка перед респавном юнита после смерти
     
 
     // Start is called before the first frame update
@@ -25,8 +30,16 @@ public class Unit : MonoBehaviour
         {
             CheckPlayerInputs();
         }
+
+        //чтобы hp бар над головой был напротив камеры
+        if (healthBar != null)
+        {
+            healthBar.gameObject.transform.LookAt(Camera.main.transform.position);
+            healthBar.gameObject.transform.Rotate(0f, 180f, 0f);
+        }
         
-        
+
+
     }
 
     /// <summary>
@@ -58,6 +71,14 @@ public class Unit : MonoBehaviour
         {
             weaponHolder.armedWeapon?.TryReload();
         }
+
+        //смена оружия
+        float mouseScroll = Input.GetAxis("Mouse ScrollWheel");
+        if (mouseScroll != 0f)
+        {
+            if (mouseScroll > 0) weaponHolder.SelectNextWeapon();
+            else weaponHolder.SelectPrevWeapon();
+        }
     }
 
     /// <summary>
@@ -69,14 +90,19 @@ public class Unit : MonoBehaviour
     public void TakeDamage(Unit attacker, Weapon weapon, int damage)
     {
         if (health <= 0) return;
-        health -= damage;
-        print($"{attacker.gameObject.name} нанес {damage} единиц урона {gameObject.name}. Осталось HP: {health} ");
+        health -= damage;        
+        UpdateHealthBar();//Health UI
         if (health <= 0) Die();
+    }
 
-        //Health UI
-        if (!isBot)
+    //обновление здоровья в UI
+    public void UpdateHealthBar()
+    {
+        if (!isBot) ScreenGUI.instance.UpdateHealthBar(health); //обновление hp на экране
+        //обновление hp в баре над юнитом
+        if (healthBar != null)
         {
-            ScreenGUI.instance.UpdateHealthBar(health);
+            healthBar.value = health / 100f;
         }
     }
 
@@ -85,7 +111,18 @@ public class Unit : MonoBehaviour
     /// </summary>
     public void Die()
     {
-        print(gameObject.name + " скончался");
+        //спавн "трупа" заместо настоящего юнита
+        GameObject deadbody = Instantiate(deadBodyPrefab, transform.position, transform.rotation);
+        deadbody.GetComponent<MeshRenderer>().material = gameObject.GetComponent<MeshRenderer>().material;
+        Destroy(gameObject);
+        Destroy(deadbody, deadBodyLifetime);
+        UnitsHolder.units.Remove(this);
+
+        //Респавн
+        if (isBot)
+        {
+            Spawner.instance.SpawnUnit(Spawner.instance.botPrefab, respawnTime);
+        }
     }
 
 

@@ -36,6 +36,7 @@ public class Spawner : MonoBehaviour
         
     }
 
+    //спавн юнита
     public GameObject SpawnUnit(GameObject unitPrefab)
     {
         //проверяем - является ли префаб юнитом
@@ -52,5 +53,16 @@ public class Spawner : MonoBehaviour
             Camera.main.GetComponent<CameraFollow>().FollowTo(obj.transform);
         }
         return obj;
+    }
+
+    public void SpawnUnit(GameObject unitPrefab, float time)
+    {
+        StartCoroutine(RequestSpawnUnit(unitPrefab, time));
+    }
+
+    private IEnumerator RequestSpawnUnit(GameObject unitPrefab, float time)
+    {
+        yield return new WaitForSeconds(time);
+        SpawnUnit(unitPrefab);
     }
 }

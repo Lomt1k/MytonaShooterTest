@@ -56,12 +56,6 @@ public abstract class Weapon : MonoBehaviour
         _ammo--;
         _lastShotTime = Time.time;
         ScreenGUI.instance.UpdateAmmoText(_weaponOwner);
-        print(_weaponOwner.gameObject.name + " выстрелил из " + weaponData.name);
-        //создаем пулю (визуал)
-        GameObject bullet = Instantiate(weaponData.bulletPrefab, shotOrigin.position, weaponData.bulletPrefab.transform.rotation);
-        bullet.transform.localEulerAngles += new Vector3(0f, _weaponOwner.transform.localEulerAngles.y, 0f);
-        bullet.GetComponent<Rigidbody>().AddForce(bullet.transform.up * weaponData.bulletSpeed);
-        Destroy(bullet, weaponData.bulletLifetime);
     }
 
     /// <summary>
@@ -82,12 +76,11 @@ public abstract class Weapon : MonoBehaviour
     protected virtual IEnumerator Reload()
     {
         isReloading = true;
-        print(_weaponOwner.gameObject.name + " перезаряжает " + weaponData.name);
+        ScreenGUI.instance.UpdateAmmoText(_weaponOwner);
         yield return new WaitForSeconds(weaponData.reloadTime);
         isReloading = false;
         Ammo = weaponData.magazineAmount;
         ScreenGUI.instance.UpdateAmmoText(_weaponOwner);
-        print(_weaponOwner.gameObject.name + " закончил перезарядку " + weaponData.name);
     }
 
     public void SetOwner(Unit owner)
