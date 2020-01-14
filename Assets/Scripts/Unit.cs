@@ -9,7 +9,7 @@ public class Unit : MonoBehaviour
     public WeaponHolder weaponHolder;
     public int health = 100;
     public bool isBot = false; //юнит является ботом
-
+    public GameObject[] weapons; //оружие, которое юнит получает при спавне
     
 
     // Start is called before the first frame update

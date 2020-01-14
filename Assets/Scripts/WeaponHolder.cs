@@ -4,9 +4,11 @@ using UnityEngine;
 
 public class WeaponHolder : MonoBehaviour
 {
+    List<Weapon> _weapons;
     Weapon _armedWeapon;
 
-    protected Unit _weaponOwner; //юнит, которому принадлежит оружие
+    public Unit _weaponOwner; //юнит, которому принадлежит оружие
+    public Transform weaponPos;
 
     public Weapon armedWeapon
     {
@@ -17,11 +19,26 @@ public class WeaponHolder : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        _weaponOwner = transform.GetComponentInParent<Unit>();
+        _weapons = new List<Weapon>();
         StartCoroutine(UpdateGUI(0.1f)); //через карутин для избежания исключения
 
-        //hardcode временно
-        armedWeapon = transform.Find("Rifle").GetComponent<Rifle>();
+        //выдаём юниту оружие, которое у него прописано в классе Unit
+        foreach (var weapon in _weaponOwner.weapons)
+        {
+            AddWeapon(weapon);
+        }        
+    }
+
+    // Выдает оружие юниту
+    public void AddWeapon(GameObject weaponPrefab, bool setArmedWeapon = true)
+    {
+        if (weaponPrefab.GetComponent<Weapon>() == null) return;
+
+        GameObject weaponObj = Instantiate(weaponPrefab, weaponPos.position, weaponPos.rotation, transform);
+        Weapon weapon = weaponObj.GetComponent<Weapon>();
+        weapon.SetOwner(_weaponOwner);
+        _weapons.Add(weapon);
+        if (setArmedWeapon == true) armedWeapon = weapon;
     }
 
     protected IEnumerator UpdateGUI(float delay = 0f)

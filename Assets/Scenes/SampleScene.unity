@@ -1973,7 +1973,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerPrefab: {fileID: 7466078490395262066, guid: 9b98cb2d7c3187241819839d5625b662,
     type: 3}
-  botPrefab: {fileID: 3338232339665648922, guid: c0ff9bec608930c499dc5089c964109d,
+  botPrefab: {fileID: 7700458976244818449, guid: 00c5dc28802fb79439bcbbd88f72180b,
     type: 3}
   unitSpawns:
   - {fileID: 1362266299}

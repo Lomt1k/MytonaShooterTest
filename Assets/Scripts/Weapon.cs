@@ -32,7 +32,6 @@ public abstract class Weapon : MonoBehaviour
 
     protected virtual void OnStart()
     {
-        _weaponOwner = transform.GetComponentInParent<Unit>();
         _ammo = weaponData.magazineAmount;
     }
 
@@ -89,6 +88,11 @@ public abstract class Weapon : MonoBehaviour
         Ammo = weaponData.magazineAmount;
         ScreenGUI.instance.UpdateAmmoText(_weaponOwner);
         print(_weaponOwner.gameObject.name + " закончил перезарядку " + weaponData.name);
+    }
+
+    public void SetOwner(Unit owner)
+    {
+        _weaponOwner = owner;
     }
 
 

@@ -43,7 +43,7 @@ public class Spawner : MonoBehaviour
 
         //спавним юнита
         int rand = Random.Range(0, unitSpawns.Length);
-        GameObject obj = Instantiate(unitPrefab, unitSpawns[rand].position, Quaternion.identity);
+        GameObject obj = Instantiate(unitPrefab, unitSpawns[rand].position, unitSpawns[rand].rotation);
         Unit unit = obj.GetComponent<Unit>();
         UnitsHolder.units.Add(unit);
         //цепляем камеру за юнитом, если это игрок

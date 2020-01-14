@@ -1,5 +1,35 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &7011565430848028642
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2703574782954087076}
+  m_Layer: 8
+  m_Name: weaponPos
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2703574782954087076
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7011565430848028642}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.3230001, y: 0, z: 0.8899999}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 7466078490009956226}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &7466078489177895034
 GameObject:
   m_ObjectHideFlags: 0
@@ -121,6 +151,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 7466078488879740648}
+  - {fileID: 2703574782954087076}
   m_Father: {fileID: 7466078490395262070}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -136,6 +167,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b6c6d12f741a4e449b44c3ac28380e27, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _weaponOwner: {fileID: 7466078490395262071}
+  weaponPos: {fileID: 2703574782954087076}
 --- !u!1 &7466078490395262066
 GameObject:
   m_ObjectHideFlags: 0
@@ -152,7 +185,7 @@ GameObject:
   - component: {fileID: 7466078490395262072}
   m_Layer: 8
   m_Name: Player
-  m_TagString: Untagged
+  m_TagString: Unit
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -250,6 +283,8 @@ MonoBehaviour:
   weaponHolder: {fileID: 7466078490009956227}
   health: 100
   isBot: 0
+  weapons:
+  - {fileID: 815377813719514020, guid: 0220e48358ff04648ad9078b0973383e, type: 3}
 --- !u!143 &7466078490395262072
 CharacterController:
   m_ObjectHideFlags: 0
@@ -282,8 +317,8 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 815377813719514020, guid: 0220e48358ff04648ad9078b0973383e,
         type: 3}
-      propertyPath: m_Layer
-      value: 8
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 815377813719514024, guid: 0220e48358ff04648ad9078b0973383e,
         type: 3}
@@ -340,21 +375,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 815377813719514024, guid: 0220e48358ff04648ad9078b0973383e,
-        type: 3}
-      propertyPath: m_LocalScale.z
-      value: 1.1764704
-      objectReference: {fileID: 0}
-    - target: {fileID: 8632587429419775520, guid: 0220e48358ff04648ad9078b0973383e,
-        type: 3}
-      propertyPath: m_Layer
-      value: 8
-      objectReference: {fileID: 0}
-    - target: {fileID: 815377813719514022, guid: 0220e48358ff04648ad9078b0973383e,
-        type: 3}
-      propertyPath: m_Materials.Array.data[0]
-      value: 
-      objectReference: {fileID: 2100000, guid: cb4e29d2314a04940b26b0234f499212, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0220e48358ff04648ad9078b0973383e, type: 3}
 --- !u!4 &7466078488879740648 stripped

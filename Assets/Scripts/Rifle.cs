@@ -19,7 +19,6 @@ public class Rifle : Weapon
         RaycastHit hit;
         if (Physics.Raycast(ray, out hit))
         {
-            
             if (hit.transform.gameObject.CompareTag("Unit"))
             {
                 hit.transform.gameObject.GetComponent<Unit>().TakeDamage(_weaponOwner, this, weaponData.damage);
