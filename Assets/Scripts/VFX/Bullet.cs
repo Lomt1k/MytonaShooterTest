@@ -2,14 +2,13 @@
 
 namespace MyTonaShooterTest.VFX
 {
-        public class Bullet : MonoBehaviour
+    public class Bullet : MonoBehaviour
+    {
+        void OnCollisionEnter(Collision collision)
         {
-
-            void OnCollisionEnter(Collision collision)
-            {
-                if (collision.gameObject.CompareTag("Weapon")) return;
-                Destroy(gameObject);
-            }
+            Destroy(gameObject);
         }
+    }
+
 
 }

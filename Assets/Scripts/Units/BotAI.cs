@@ -60,10 +60,10 @@ namespace MyTonaShooterTest
                 while (true)
                 {
                     yield return new WaitForSeconds(delay);
-                    //если противник для атаки уже выбран - проверяем что по нему еще можно атаковать (сбрасываем targetEnemy если нельзя)
+                    //если противник для атаки уже выбран - проверяем что по нему еще можно атаковать (сбрасываем targetEnemy если нельзя)                      
+                    if (targetEnemy != null && !targetEnemy.isAlive) targetEnemy = null;
                     if (targetEnemy != null)
                     {
-                        if (!targetEnemy.isAlive) targetEnemy = null;
                         //проверяем, что ничего не мешает стрелять во врага
                         Ray ray = new Ray(transform.position, targetEnemy.transform.position);
                         RaycastHit hit;
