@@ -1,5 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
+using MyTonaShooterTest.Weapons;
+using MyTonaShooterTest.Units;
 
 public class ScreenGUI : MonoBehaviour
 {

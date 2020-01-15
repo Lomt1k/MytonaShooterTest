@@ -1,6 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using MyTonaShooterTest.Weapons;
+using MyTonaShooterTest.Units;
 
 public class Shotgun : Weapon
 {
