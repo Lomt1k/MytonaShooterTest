@@ -32,8 +32,7 @@ public abstract class Weapon : MonoBehaviour
 
     protected virtual void OnStart()
     {
-        _weaponOwner = transform.GetComponentInParent<Unit>();
-        _ammo = weaponData.ClipSize;
+        _ammo = weaponData.magazineAmount;
     }
 
     /// <summary>
@@ -57,7 +56,6 @@ public abstract class Weapon : MonoBehaviour
         _ammo--;
         _lastShotTime = Time.time;
         ScreenGUI.instance.UpdateAmmoText(_weaponOwner);
-        print(_weaponOwner.gameObject.name + " выстрелил из " + weaponData.name);
     }
 
     /// <summary>
@@ -66,7 +64,7 @@ public abstract class Weapon : MonoBehaviour
     /// <returns>Возвращает true в случае, если началась перезарядка</returns>
     public virtual bool TryReload()
     {
-        if (_ammo >= weaponData.ClipSize) return false;
+        if (_ammo >= weaponData.magazineAmount) return false;
         if (isReloading) return false;
         StartCoroutine(Reload());      
         return true;
@@ -78,12 +76,16 @@ public abstract class Weapon : MonoBehaviour
     protected virtual IEnumerator Reload()
     {
         isReloading = true;
-        print(_weaponOwner.gameObject.name + " перезаряжает " + weaponData.name);
+        ScreenGUI.instance.UpdateAmmoText(_weaponOwner);
         yield return new WaitForSeconds(weaponData.reloadTime);
         isReloading = false;
-        Ammo = weaponData.ClipSize;
+        Ammo = weaponData.magazineAmount;
         ScreenGUI.instance.UpdateAmmoText(_weaponOwner);
-        print(_weaponOwner.gameObject.name + " закончил перезарядку " + weaponData.name);
+    }
+
+    public void SetOwner(Unit owner)
+    {
+        _weaponOwner = owner;
     }
 
 

@@ -30,7 +30,14 @@ public class ScreenGUI : MonoBehaviour
         Weapon weap = unit.weaponHolder.armedWeapon;
         if (weap != null)
         {
-            ammoText.text = $"{weap.Ammo} / {weap.weaponData.ClipSize}";
+            if (weap.isReloading)
+            {
+                ammoText.text = "<color=red>[ПЕРЕЗАРЯДКА]</color>";
+            }
+            else
+            {
+                ammoText.text = $"{weap.Ammo} / {weap.weaponData.magazineAmount}";
+            }
         }
         else ammoText.text = "";
     }
