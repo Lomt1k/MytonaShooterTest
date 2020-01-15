@@ -10,15 +10,15 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f3ee3aef56dabe949b00a7d6b04110e5, type: 3}
-  m_Name: Rifle
+  m_Name: Shotgun
   m_EditorClassIdentifier: 
-  name: "\u0412\u0438\u043D\u0442\u043E\u0432\u043A\u0430"
-  damage: 12
-  bulletsPerShot: 1
-  magazineAmount: 25
-  fireRate: 4
-  reloadTime: 4
-  bulletPrefab: {fileID: 190257347837828123, guid: 43849881309ea3e47a4a1aa4e1fbc272,
+  name: "\u0414\u0440\u043E\u0431\u043E\u0432\u0438\u043A"
+  damage: 16
+  bulletsPerShot: 5
+  magazineAmount: 4
+  fireRate: 1
+  reloadTime: 3
+  bulletPrefab: {fileID: 6596682428038866869, guid: 30495430bde03924f8e84ab8f497e138,
     type: 3}
-  bulletLifetime: 1
-  bulletSpeed: 5000
+  bulletLifetime: 0.5
+  bulletSpeed: 2500

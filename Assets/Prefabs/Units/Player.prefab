@@ -273,7 +273,9 @@ MonoBehaviour:
   - {fileID: 3067795215945768939, guid: 31957ad44eab4414c934c4d4bddd2d87, type: 3}
   - {fileID: 815377813719514020, guid: 0220e48358ff04648ad9078b0973383e, type: 3}
   deadBodyLifetime: 3
+  deadBodyForce: 100
   respawnTime: 5
+  defaultUnitStats: {fileID: 11400000, guid: 90ed26a42145c1144a07ae2afb7d3a3c, type: 2}
 --- !u!143 &7466078490395262072
 CharacterController:
   m_ObjectHideFlags: 0

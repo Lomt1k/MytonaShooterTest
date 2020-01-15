@@ -20,7 +20,7 @@ namespace MyTonaShooterTest
             // Start is called before the first frame update
             void Start()
             {
-                agent.speed = unit.moveSpeed;
+                agent.speed = unit.unitStats.moveSpeed;
                 MoveToNextWayPoint();
                 StartCoroutine(CheckForEnemy(enemyCheckTime));
             }
@@ -61,14 +61,18 @@ namespace MyTonaShooterTest
                 {
                     yield return new WaitForSeconds(delay);
                     //если противник для атаки уже выбран - проверяем что по нему еще можно атаковать (сбрасываем targetEnemy если нельзя)                      
-                    if (targetEnemy != null && !targetEnemy.isAlive) targetEnemy = null;
                     if (targetEnemy != null)
                     {
-                        //проверяем, что ничего не мешает стрелять во врага
-                        Ray ray = new Ray(transform.position, targetEnemy.transform.position);
-                        RaycastHit hit;
-                        if (Physics.Raycast(ray, out hit, wallMask)) targetEnemy = null;
-                    }
+                        if (!targetEnemy.isAlive) targetEnemy = null;
+                        else if (Vector3.Distance(targetEnemy.transform.position, transform.position) > viewDistance) targetEnemy = null;
+                        else
+                        {
+                            //проверяем, что ничего не мешает стрелять во врага
+                            Ray ray = new Ray(transform.position, targetEnemy.transform.position);
+                            RaycastHit hit;
+                            if (Physics.Raycast(ray, out hit, wallMask)) targetEnemy = null;
+                        }
+                    }                   
 
                     if (targetEnemy == null) FindEnemy();
                 }
@@ -84,7 +88,6 @@ namespace MyTonaShooterTest
 
                 foreach (var unit in UnitsHolder.units)
                 {
-
                     if (unit == this.unit) continue;
                     if (Vector3.Distance(unit.transform.position, transform.position) > viewDistance) continue;
                     if (Vector3.Distance(unit.transform.position, transform.position) > closestEnemyDistance) continue; //уже найден доступный противник на более близкой дистанции

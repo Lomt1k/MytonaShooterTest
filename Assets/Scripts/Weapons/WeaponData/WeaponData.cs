@@ -6,7 +6,7 @@ namespace MyTonaShooterTest.Weapons
     public class WeaponData : ScriptableObject
     {
         public new string name;
-        public int damage; //урон от 1 пули
+        public float damage; //урон от 1 пули
         public int bulletsPerShot = 1; //количество пуль за один выстрел
         public int magazineAmount; // количество патронов в обойме
         public float fireRate = 1f; //скорострельность
