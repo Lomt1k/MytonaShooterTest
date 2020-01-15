@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.AI;
 using MyTonaShooterTest.Weapons;
 
 namespace MyTonaShooterTest.Units
@@ -11,12 +12,12 @@ namespace MyTonaShooterTest.Units
         public float moveSpeed = 10; //скорость передвижения
         public CharacterController characterController;
         public WeaponHolder weaponHolder;
-        public Rigidbody rb;
         public int health = 100;
         public Slider healthBar; //hp бар над ботом
         public bool isBot = false; //юнит является ботом
         public GameObject[] spawnWeapons; //оружие, которое юнит получает при спавне
         public float deadBodyLifetime = 3f; //время, которое будет существовать труп после смерти юнита
+        public float deadBodyForce = 100f; //сила, применяемая к Rigidbody в момент смерти юнита (для падения юнита по физике)
         public float respawnTime = 5f; //задержка перед респавном юнита после смерти
 
         int _teamid;
@@ -29,6 +30,11 @@ namespace MyTonaShooterTest.Units
         public void SetTeam(int teamid)
         {
             _teamid = teamid;
+        }
+
+        void Start()
+        {
+            if (!isBot) ScreenGUI.instance.UpdateHealthBar(health);
         }
 
         // Update is called once per frame
@@ -116,23 +122,27 @@ namespace MyTonaShooterTest.Units
             }
         }
 
-        /// <summary>
-        /// срабатывает в момент смерти персонажа
-        /// </summary>
+        // срабатывает в момент смерти персонажа
         public void Die()
         {
+            //отключаем лишние компоненты
             characterController.enabled = false;
             this.enabled = false;
             weaponHolder.gameObject.SetActive(false);
-            rb.velocity = Vector3.zero;
+            NavMeshAgent agent = GetComponent<NavMeshAgent>();
+            if (agent != null) agent.enabled = false;
+            if (healthBar != null) healthBar.gameObject.SetActive(false);
+            //добавляем RiridBody для падения трупа по физике
+            Rigidbody rb = gameObject.AddComponent<Rigidbody>();
+            rb.AddForce(-transform.forward * deadBodyForce);
             Destroy(gameObject, deadBodyLifetime);
+            if (!isBot) ScreenGUI.instance.storedPlayerTeamid = teamid; //не лучший способ передачи teamid для респавна игрока..
+            //удаляем юнита из списка юнитов
             UnitsHolder.units.Remove(this);
 
             //Респавн
-            if (isBot)
-            {
-                Spawner.instance.SpawnUnit(Spawner.instance.botPrefab, teamid, respawnTime);
-            }
+            if (isBot) Spawner.instance.SpawnUnit(Spawner.instance.botPrefab, teamid, respawnTime);
+            else ScreenGUI.instance.ShowDeathMenu();
         }
 
         public bool isAlive

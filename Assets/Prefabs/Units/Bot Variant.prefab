@@ -405,7 +405,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   agent: {fileID: -5921903057751357477}
   unit: {fileID: 7700458976244818452}
-  viewDistance: 30
+  viewDistance: 15
   enemyCheckTime: 0.5
   wallMask:
     serializedVersion: 2

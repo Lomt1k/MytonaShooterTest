@@ -28,7 +28,7 @@ namespace MyTonaShooterTest.Units
             //test
             for (int i = 0; i < 4; i++)
             {
-                SpawnUnit(botPrefab, 1);
+                SpawnUnit(botPrefab, i);
             }
         }
 

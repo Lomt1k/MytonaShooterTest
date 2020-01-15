@@ -32,7 +32,7 @@ namespace MyTonaShooterTest
             {
                 MovementUpdate();
 
-                if (targetEnemy != null)
+                if (targetEnemy != null && unit.isAlive)
                 {
                     Vector3 lookPos = new Vector3(targetEnemy.transform.position.x, transform.position.y, targetEnemy.transform.position.z);
                     gameObject.transform.LookAt(lookPos);
