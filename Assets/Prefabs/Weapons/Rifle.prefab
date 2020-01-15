@@ -11,8 +11,8 @@ GameObject:
   - component: {fileID: 815377813719514024}
   - component: {fileID: 815377813719514023}
   - component: {fileID: 815377813719514022}
-  - component: {fileID: 815377813719514021}
   - component: {fileID: 1827501154635929151}
+  - component: {fileID: 3179470031116229423}
   m_Layer: 0
   m_Name: Rifle
   m_TagString: Weapon
@@ -27,15 +27,15 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 815377813719514020}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.323, y: 0, z: 0.89}
+  m_LocalRotation: {x: -0.0030542875, y: 0, z: 0, w: 0.99999535}
+  m_LocalPosition: {x: 0.323, y: 1.568, z: 0.886}
   m_LocalScale: {x: 0.2617919, y: 0.24413, z: 1.1764705}
   m_Children:
   - {fileID: 7675517201656305787}
   - {fileID: 3258243593284979265}
   m_Father: {fileID: 0}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: -0.35000002, y: 0, z: 0}
 --- !u!33 &815377813719514023
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -82,19 +82,6 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
---- !u!65 &815377813719514021
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 815377813719514020}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &1827501154635929151
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -109,6 +96,26 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   weaponData: {fileID: 11400000, guid: 01e8ebe0c46900b47997d6f11586b255, type: 2}
   shotOrigin: {fileID: 7675517201656305787}
+  animator: {fileID: 3179470031116229423}
+--- !u!95 &3179470031116229423
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 815377813719514020}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: fd074b26c8352d742adf9956c6647224, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1 &1057951392940779849
 GameObject:
   m_ObjectHideFlags: 0
@@ -122,7 +129,7 @@ GameObject:
   - component: {fileID: 4947628070804076754}
   - component: {fileID: 5914840770322750372}
   m_Layer: 0
-  m_Name: Cube
+  m_Name: Magazine
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

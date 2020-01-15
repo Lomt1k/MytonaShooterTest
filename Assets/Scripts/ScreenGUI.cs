@@ -1,5 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
+using MyTonaShooterTest.Weapons;
+using MyTonaShooterTest.Units;
 
 public class ScreenGUI : MonoBehaviour
 {
@@ -12,6 +14,9 @@ public class ScreenGUI : MonoBehaviour
 
     public Slider healthBar;
     public Text ammoText;
+    public GameObject deathPanel;
+
+    public int storedPlayerTeamid; //сюда кладется teamid игрока при смерти, который присваивается игроку при респавне
 
     // Start is called before the first frame update
     void Start()
@@ -40,6 +45,21 @@ public class ScreenGUI : MonoBehaviour
             }
         }
         else ammoText.text = "";
+    }
+
+    public void ShowDeathMenu()
+    {
+        deathPanel.SetActive(true);
+        healthBar.gameObject.SetActive(false);
+        ammoText.gameObject.SetActive(false);
+    }
+
+    public void RespawnButtonClick()
+    {
+        deathPanel.SetActive(false);
+        healthBar.gameObject.SetActive(true);
+        ammoText.gameObject.SetActive(true);
+        Spawner.instance.SpawnUnit(Spawner.instance.playerPrefab, storedPlayerTeamid);
     }
 
 }
