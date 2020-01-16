@@ -28,7 +28,7 @@ public class Shotgun : Weapon
             Ray ray = new Ray(shotOrigin.position, shotOrigin.forward);
             Debug.DrawRay(shotOrigin.position, shotOrigin.forward);
             RaycastHit hit;
-            if (Physics.Raycast(ray, out hit))
+            if (Physics.Raycast(ray, out hit, weaponData.shotDistance))
             {
                 if (hit.transform.gameObject.CompareTag("Unit"))
                 {
@@ -40,10 +40,10 @@ public class Shotgun : Weapon
         }
 
         //создаем пулю (визуал)
-        GameObject bullet = Instantiate(weaponData.bulletPrefab, shotOrigin.position, weaponData.bulletPrefab.transform.rotation, shotOrigin);
-        bullet.transform.localEulerAngles += new Vector3(0f, _weaponOwner.transform.localEulerAngles.y, 0f);
-        bullet.transform.localPosition += weaponData.bulletPrefab.transform.position;
-        Destroy(bullet, weaponData.bulletLifetime);
+        GameObject bulletObj = Instantiate(weaponData.bulletPrefab, shotOrigin.position, weaponData.bulletPrefab.transform.rotation, shotOrigin);
+        bulletObj.transform.localEulerAngles += new Vector3(0f, _weaponOwner.transform.localEulerAngles.y, 0f);
+        bulletObj.transform.localPosition += weaponData.bulletPrefab.transform.position;
+        Destroy(bulletObj, weaponData.bulletLifetime);
 
 
     }
