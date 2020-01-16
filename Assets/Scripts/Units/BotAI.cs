@@ -20,11 +20,15 @@ namespace MyTonaShooterTest
             // Start is called before the first frame update
             void Start()
             {
-                agent.speed = unit.unitStats.moveSpeed;
+                LoadUnitStats();
                 MoveToNextWayPoint();
                 StartCoroutine(CheckForEnemy(enemyCheckTime));
             }
 
+            public void LoadUnitStats()
+            {
+                agent.speed = unit.unitStats.moveSpeed;
+            }
 
 
             // Update is called once per frame
@@ -105,6 +109,7 @@ namespace MyTonaShooterTest
                 targetEnemy = closestEnemy;
                 return true;
             }
+
         }
 
     }

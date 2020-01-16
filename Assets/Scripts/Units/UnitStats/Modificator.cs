@@ -1,6 +1,9 @@
-﻿
+﻿using System;
+using UnityEngine;
+
 namespace MyTonaShooterTest.Units
 {
+    [Serializable]
     public class Modificator 
     {
         public enum ModType
@@ -16,7 +19,7 @@ namespace MyTonaShooterTest.Units
             damageMult
         }
 
-        public ModType modType;        
+        public ModType modType;  
         public StatType statType;
         public float value;
     }
