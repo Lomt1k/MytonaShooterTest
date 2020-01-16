@@ -18,7 +18,6 @@ namespace MyTonaShooterTest.Units
         public float deadBodyLifetime = 3f; //время, которое будет существовать труп после смерти юнита
         public float deadBodyForce = 100f; //сила, применяемая к Rigidbody в момент смерти юнита (для падения юнита по физике)
         public float respawnTime = 5f; //задержка перед респавном юнита после смерти
-        [HideInInspector]
         public UnitStats unitStats; //класс, который хранит и обрабатывает статы игрока
         public UnitStatsData defaultUnitStats; //Scriptable Object класс, из которого подгружаются статы по умолначию
 
@@ -110,7 +109,7 @@ namespace MyTonaShooterTest.Units
         public void TakeDamage(Unit attacker, Weapon weapon, float damage)
         {
             //применяем модификаторы урона
-            damage *= attacker.unitStats.dagameMult * unitStats.incomingDamageMult;
+            damage *= attacker.unitStats.dagameMultiplicator * unitStats.incomingDamageMultiplicator;
 
             if (health <= 0) return;
             health -= damage;

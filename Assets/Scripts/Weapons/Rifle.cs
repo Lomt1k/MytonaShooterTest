@@ -13,9 +13,10 @@ public class Rifle : Weapon
         base.Shot();
 
         //создаем пулю (визуал)
-        GameObject bulletObj = Instantiate(weaponData.bulletPrefab, shotOrigin.position, weaponData.bulletPrefab.transform.rotation);
-        bulletObj.transform.localEulerAngles += new Vector3(0f, _weaponOwner.transform.localEulerAngles.y, 0f);
-        Bullet bullet = bulletObj.GetComponent<Bullet>();        
+        Bullet bullet = GameManager.instance.rifleBulletPool.GetPoolObject();
+        bullet.transform.position = shotOrigin.position;
+        bullet.transform.rotation = weaponData.bulletPrefab.transform.rotation;
+        bullet.transform.localEulerAngles += new Vector3(0f, _weaponOwner.transform.localEulerAngles.y, 0f);
 
         Ray ray = new Ray(shotOrigin.position, shotOrigin.forward);
         RaycastHit hit;

@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -6,10 +7,13 @@ namespace MyTonaShooterTest.Units
 {
     public class UnitStats
     {
+        UnitStatsData _defaultStats;
         float _moveSpeed; //скорость движения
         float _attackSpeed; //скорость атаки
         float _incomingDamageMult; //входящий урон
         float _dagameMult; //исходящий урон
+
+        public Modificator[] mods;
 
         public float moveSpeed
         {
@@ -23,13 +27,13 @@ namespace MyTonaShooterTest.Units
             private set => _attackSpeed = value;
         }
 
-        public float incomingDamageMult
+        public float incomingDamageMultiplicator
         {
             get => _incomingDamageMult;
             private set => _incomingDamageMult = value;
         }
 
-        public float dagameMult
+        public float dagameMultiplicator
         {
             get => _dagameMult;
             private set => _dagameMult = value;
@@ -37,11 +41,23 @@ namespace MyTonaShooterTest.Units
 
         public UnitStats(UnitStatsData defaultUnitStats)
         {
-            moveSpeed = defaultUnitStats.moveSpeed;
-            attackSpeed = defaultUnitStats.attackSpeed;
-            incomingDamageMult = defaultUnitStats.incomingDamageMult;
-            dagameMult = defaultUnitStats.dagameMult;
+            _defaultStats = defaultUnitStats;
+            RecalculateStats();
         }
+
+        public void RecalculateStats()
+        {
+            moveSpeed = _defaultStats.moveSpeed;
+            attackSpeed = _defaultStats.attackSpeed;
+            incomingDamageMultiplicator = _defaultStats.incomingDamageMult;
+            dagameMultiplicator = _defaultStats.dagameMult;
+
+            //to do
+        }
+
+
+
+        
     }
 }
 
