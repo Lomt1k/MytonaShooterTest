@@ -50,7 +50,7 @@ namespace MyTonaShooterTest.Weapons
                     TryReload();
                     return false;
                 }
-                if (Time.time < 1f / weaponData.fireRate + _lastShotTime) return false;
+                if (Time.time < 1f / (weaponData.fireRate * _weaponOwner.unitStats.attackSpeed) + _lastShotTime) return false;
                 if (isReloading) return false;
                 Shot();
                 return true;

@@ -24,7 +24,7 @@ public class ScreenGUI : MonoBehaviour
         _instance = this;
     }
 
-    public void UpdateHealthBar(int hp)
+    public void UpdateHealthBar(float hp)
     {
         healthBar.value = hp / 100f;
     }

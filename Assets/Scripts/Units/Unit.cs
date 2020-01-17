@@ -9,16 +9,20 @@ namespace MyTonaShooterTest.Units
 {
     public class Unit : MonoBehaviour
     {
-        public float moveSpeed = 10; //скорость передвижения
         public CharacterController characterController;
         public WeaponHolder weaponHolder;
-        public int health = 100;
+        public float health = 100f;
         public Slider healthBar; //hp бар над ботом
         public bool isBot = false; //юнит является ботом
         public GameObject[] spawnWeapons; //оружие, которое юнит получает при спавне
         public float deadBodyLifetime = 3f; //время, которое будет существовать труп после смерти юнита
         public float deadBodyForce = 100f; //сила, применяемая к Rigidbody в момент смерти юнита (для падения юнита по физике)
         public float respawnTime = 5f; //задержка перед респавном юнита после смерти
+        public UnitStats unitStats; //класс, который хранит и обрабатывает статы игрока
+        public UnitStatsData defaultUnitStats; //Scriptable Object класс, из которого подгружаются статы по умолначию
+
+        //ABILITY TEST временное поле для абилок
+        public Ability testAbilityAddsOnPressKeyE;
 
         int _teamid;
 
@@ -35,6 +39,9 @@ namespace MyTonaShooterTest.Units
         void Start()
         {
             if (!isBot) ScreenGUI.instance.UpdateHealthBar(health);
+            //инициализируем unitStats, подгружая в него значения статов по умолчанию из defaultUnitStats
+            unitStats = new UnitStats(defaultUnitStats);
+            unitStats.SetOwner(this);
         }
 
         // Update is called once per frame
@@ -64,7 +71,7 @@ namespace MyTonaShooterTest.Units
             if (!isAlive) return;
             //передвижение
             Vector3 moveDir = new Vector3(Input.GetAxisRaw("Horizontal"), 0f, Input.GetAxisRaw("Vertical"));
-            characterController.Move(moveDir * moveSpeed * Time.deltaTime);
+            characterController.Move(moveDir * unitStats.moveSpeed * Time.deltaTime);
 
             //поворот игрока в сторону курсора
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
@@ -95,6 +102,13 @@ namespace MyTonaShooterTest.Units
                 else weaponHolder.SelectPrevWeapon();
             }
 
+            //ABILITY TEST временный код для теста абилок
+            if (Input.GetKeyDown(KeyCode.E))
+            {
+                unitStats.AddAbility(testAbilityAddsOnPressKeyE);
+                print("Damage Mult: " + unitStats.dagameMult);
+            }
+
         }
 
         /// <summary>
@@ -103,8 +117,11 @@ namespace MyTonaShooterTest.Units
         /// <param name="attacker">юнит, от которого получен урон</param>
         /// <param name="weapon">оружие, при помощи которого нанесен урон</param>
         /// <param name="damage">количество полученного урона</param>
-        public void TakeDamage(Unit attacker, Weapon weapon, int damage)
+        public void TakeDamage(Unit attacker, Weapon weapon, float damage)
         {
+            //применяем модификаторы урона
+            damage *= attacker.unitStats.dagameMult * unitStats.incomingDamageMult;
+
             if (health <= 0) return;
             health -= damage;
             UpdateHealthBar();//Health UI

@@ -263,7 +263,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a65c7db271be0bc4daa0fcb8855a5bab, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 10
   characterController: {fileID: 7466078490395262072}
   weaponHolder: {fileID: 7466078490009956227}
   health: 100
@@ -273,7 +272,17 @@ MonoBehaviour:
   - {fileID: 3067795215945768939, guid: 31957ad44eab4414c934c4d4bddd2d87, type: 3}
   - {fileID: 815377813719514020, guid: 0220e48358ff04648ad9078b0973383e, type: 3}
   deadBodyLifetime: 3
+  deadBodyForce: 100
   respawnTime: 5
+  unitStats:
+    abilities: []
+    _moveSpeed: 0
+    _attackSpeed: 0
+    _incomingDamageMult: 0
+    _dagameMult: 0
+  defaultUnitStats: {fileID: 11400000, guid: 90ed26a42145c1144a07ae2afb7d3a3c, type: 2}
+  testAbilityAddsOnPressKeyE: {fileID: 11400000, guid: 4d636021b7349a442a0732fe1040efb6,
+    type: 2}
 --- !u!143 &7466078490395262072
 CharacterController:
   m_ObjectHideFlags: 0
