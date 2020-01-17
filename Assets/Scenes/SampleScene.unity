@@ -1948,7 +1948,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 963194225}
   m_LocalRotation: {x: 0.30473295, y: -0, z: -0, w: 0.9524378}
-  m_LocalPosition: {x: 0, y: 8.89, z: -7.43}
+  m_LocalPosition: {x: 0, y: 8.54, z: -14.17}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -2391,9 +2391,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3f76321a15813fe4687d9cecd58e33c3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerPrefab: {fileID: 7466078490395262066, guid: 9b98cb2d7c3187241819839d5625b662,
-    type: 3}
-  botPrefab: {fileID: 7700458976244818449, guid: 00c5dc28802fb79439bcbbd88f72180b,
+  unitPrefab: {fileID: 7466078490395262066, guid: 9b98cb2d7c3187241819839d5625b662,
     type: 3}
   unitSpawns:
   - {fileID: 1362266299}

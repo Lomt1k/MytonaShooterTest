@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using MyTonaShooterTest.Units;
+using MyTonaShooterTest.UI;
 
 namespace MyTonaShooterTest.Weapons
 {
@@ -76,12 +77,15 @@ namespace MyTonaShooterTest.Weapons
 
                 armedWeapon = weapon;
                 armedWeapon.gameObject.SetActive(true);
-                StartCoroutine(UpdateGUI(0.1f)); //через карутин для избежания исключения
+                if (!_weaponOwner.player.isBot)
+                {
+                    StartCoroutine(UpdateGUI(0.1f)); //через карутин для избежания исключения
+                }
             }
 
             protected IEnumerator UpdateGUI(float delay = 0f)
             {
-                yield return new WaitForSeconds(delay);
+                yield return new WaitForSeconds(delay);                
                 ScreenGUI.instance.UpdateAmmoText(_weaponOwner);
             }
 

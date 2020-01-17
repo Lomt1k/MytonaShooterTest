@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using MyTonaShooterTest.Units;
+using MyTonaShooterTest.UI;
 
 namespace MyTonaShooterTest.Weapons
 {
@@ -66,7 +67,10 @@ namespace MyTonaShooterTest.Weapons
                 StartCoroutine(CheckForStootingEnd());
                 OnShootingStart();
             }
-            if (!_weaponOwner.isBot) ScreenGUI.instance.UpdateAmmoText(_weaponOwner);
+            if (!_weaponOwner.player.isBot)
+            {
+                ScreenGUI.instance.UpdateAmmoText(_weaponOwner);
+            }
         }
 
         /// <summary>
@@ -87,13 +91,25 @@ namespace MyTonaShooterTest.Weapons
         protected virtual IEnumerator Reload()
         {
             _isReloading = true;
-            if (!_weaponOwner.isBot) ScreenGUI.instance.UpdateAmmoText(_weaponOwner);
-            if (animator != null) animator.SetTrigger("StartReload");
+            if (!_weaponOwner.player.isBot)
+            {
+                ScreenGUI.instance.UpdateAmmoText(_weaponOwner);
+            }
+            if (animator != null)
+            {
+                animator.SetTrigger("StartReload");
+            }
             yield return new WaitForSeconds(weaponData.reloadTime);
             _isReloading = false;
             _ammo = weaponData.magazineAmount;
-            if (!_weaponOwner.isBot) ScreenGUI.instance.UpdateAmmoText(_weaponOwner);
-            if (animator != null) animator.SetTrigger("EndReload");
+            if (!_weaponOwner.player.isBot)
+            {
+                ScreenGUI.instance.UpdateAmmoText(_weaponOwner);
+            }
+            if (animator != null)
+            {
+                animator.SetTrigger("EndReload");
+            }
         }
 
         /// <summary>

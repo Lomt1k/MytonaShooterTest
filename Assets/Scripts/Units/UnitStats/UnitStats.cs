@@ -76,7 +76,7 @@ namespace MyTonaShooterTest.Units
         {
             if (statOwner == null) return;
 
-            if (statOwner.isBot)
+            if (statOwner.player.isBot)
             {
                 statOwner.GetComponent<BotAI>().agent.speed = moveSpeed.value;
             }

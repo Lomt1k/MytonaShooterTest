@@ -46,7 +46,7 @@ namespace MyTonaShooterTest.VFX
         {
             yield return new WaitForSeconds(time);
             OnPush();
-        }     
+        }
     }
 
 
