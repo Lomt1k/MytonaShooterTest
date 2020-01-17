@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using MyTonaShooterTest.Units;
 
 namespace MyTonaShooterTest.Weapons
 {
@@ -12,6 +13,7 @@ namespace MyTonaShooterTest.Weapons
         public float fireRate = 1f; //скорострельность
         public float reloadTime = 3f; //время перезарядки
         public float shotDistance = 100f; //дальность полета пуль
+        public Ability shootingAbility; //способность (баф), который накладывается на игрока при стрельбе
         public GameObject bulletPrefab; //префаб пули (визуал)
         public float bulletLifetime = 1f; //время до уничтожения пули (визуал)
         public float bulletSpeed = 1500f; //скорость полета пули (визуал)

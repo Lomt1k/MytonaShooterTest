@@ -18,6 +18,8 @@ MonoBehaviour:
   magazineAmount: 25
   fireRate: 12
   reloadTime: 4
+  shotDistance: 100
+  shootingAbility: {fileID: 11400000, guid: 11995daf9fc184746952903de717848c, type: 2}
   bulletPrefab: {fileID: 190257347837828123, guid: 43849881309ea3e47a4a1aa4e1fbc272,
     type: 3}
   bulletLifetime: 1

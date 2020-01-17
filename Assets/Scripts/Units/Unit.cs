@@ -21,9 +21,6 @@ namespace MyTonaShooterTest.Units
         public UnitStats unitStats; //класс, который хранит и обрабатывает статы игрока
         public UnitStatsData defaultUnitStats; //Scriptable Object класс, из которого подгружаются статы по умолначию
 
-        //ABILITY TEST временное поле для абилок
-        public Ability testAbilityAddsOnPressKeyE;
-
         int _teamid;
 
         public int teamid
@@ -71,7 +68,7 @@ namespace MyTonaShooterTest.Units
             if (!isAlive) return;
             //передвижение
             Vector3 moveDir = new Vector3(Input.GetAxisRaw("Horizontal"), 0f, Input.GetAxisRaw("Vertical"));
-            characterController.Move(moveDir * unitStats.moveSpeed * Time.deltaTime);
+            characterController.Move(moveDir * unitStats.moveSpeed.value * Time.deltaTime);
 
             //поворот игрока в сторону курсора
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
@@ -102,13 +99,6 @@ namespace MyTonaShooterTest.Units
                 else weaponHolder.SelectPrevWeapon();
             }
 
-            //ABILITY TEST временный код для теста абилок
-            if (Input.GetKeyDown(KeyCode.E))
-            {
-                unitStats.AddAbility(testAbilityAddsOnPressKeyE);
-                print("Damage Mult: " + unitStats.dagameMult);
-            }
-
         }
 
         /// <summary>
@@ -120,7 +110,7 @@ namespace MyTonaShooterTest.Units
         public void TakeDamage(Unit attacker, Weapon weapon, float damage)
         {
             //применяем модификаторы урона
-            damage *= attacker.unitStats.dagameMult * unitStats.incomingDamageMult;
+            damage *= attacker.unitStats.damageMult.value * unitStats.incomingDamageMult.value;
 
             if (health <= 0) return;
             health -= damage;

@@ -70,6 +70,7 @@ namespace MyTonaShooterTest.Weapons
                 if (armedWeapon != null)
                 {
                     if (armedWeapon.isReloading) return;
+                    if (armedWeapon.isShooting) return;
                     armedWeapon.gameObject.SetActive(false);
                 }
 

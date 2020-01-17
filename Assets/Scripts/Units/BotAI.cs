@@ -20,14 +20,9 @@ namespace MyTonaShooterTest
             // Start is called before the first frame update
             void Start()
             {
-                LoadUnitStats();
                 MoveToNextWayPoint();
                 StartCoroutine(CheckForEnemy(enemyCheckTime));
-            }
-
-            public void LoadUnitStats()
-            {
-                agent.speed = unit.unitStats.moveSpeed;
+                unit.unitStats.ReloadStats();
             }
 
 
