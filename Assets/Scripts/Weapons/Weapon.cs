@@ -2,103 +2,147 @@
 using System.Collections.Generic;
 using UnityEngine;
 using MyTonaShooterTest.Units;
+using MyTonaShooterTest.UI;
 
 namespace MyTonaShooterTest.Weapons
 {
-        public abstract class Weapon : MonoBehaviour
+    public abstract class Weapon : MonoBehaviour
+    {
+        public WeaponData weaponData;
+        public Transform shotOrigin;
+        public Animator animator;
+
+        private int _ammo; //текущее количество патронов в обойме
+        private float _lastShotTime; //момент, когда был произведен последний выстрел
+        private bool _isReloading = false;
+        private bool _isShooting = false;
+
+        protected Unit _weaponOwner; //юнит, которому принадлежит оружие
+
+        public int Ammo => _ammo;
+        public bool isReloading => _isReloading;
+        public bool isShooting => _isShooting;
+
+        public void SetOwner(Unit owner)
         {
-            public WeaponData weaponData;
-            public Transform shotOrigin;
-            public Animator animator;
+            _weaponOwner = owner;
+        }
 
-            int _ammo; //текущее количество патронов в обойме
-            float _lastShotTime; //момент, когда был произведен последний выстрел
-            bool _isReloading = false;
+        void Start()
+        {
+            OnStart();
+        }
 
-            protected Unit _weaponOwner; //юнит, которому принадлежит оружие
+        protected virtual void OnStart()
+        {
+            _ammo = weaponData.magazineAmount;
+        }
 
-            public int Ammo
+        /// <summary>
+        /// вызывает попытку выстрелить из оружия
+        /// </summary>
+        /// <returns>Возвращает true в случае успешного выстрела</returns>
+        public virtual bool TryShot()
+        {
+            if (_ammo <= 0)
             {
-                get => _ammo;
-                private set => _ammo = value;
+                TryReload();
+                return false;
             }
+            if (Time.time < 1f / (weaponData.fireRate * _weaponOwner.unitStats.attackSpeed.value) + _lastShotTime) return false;
+            if (isReloading) return false;
+            Shot();
+            return true;
+        }
 
-            public bool isReloading
+        /// <summary>
+        /// выстрел из оружия
+        /// </summary>
+        protected virtual void Shot()
+        {
+            _ammo--;
+            _lastShotTime = Time.time;
+            if (isShooting == false)
             {
-                get => _isReloading;
-                private set => _isReloading = value;
+                StartCoroutine(CheckForStootingEnd());
+                OnShootingStart();
             }
-
-            void Start()
+            if (!_weaponOwner.player.isBot)
             {
-                OnStart();
-            }
-
-            protected virtual void OnStart()
-            {
-                _ammo = weaponData.magazineAmount;
-            }
-
-            /// <summary>
-            /// вызывает попытку выстрелить из оружия
-            /// </summary>
-            /// <returns>Возвращает true в случае успешного выстрела</returns>
-            public virtual bool TryShot()
-            {
-                if (_ammo <= 0)
-                {
-                    TryReload();
-                    return false;
-                }
-                if (Time.time < 1f / (weaponData.fireRate * _weaponOwner.unitStats.attackSpeed) + _lastShotTime) return false;
-                if (isReloading) return false;
-                Shot();
-                return true;
-            }
-
-            /// <summary>
-            /// выстрел из оружия
-            /// </summary>
-            protected virtual void Shot()
-            {
-                _ammo--;
-                _lastShotTime = Time.time;
-                if (!_weaponOwner.isBot) ScreenGUI.instance.UpdateAmmoText(_weaponOwner);
-            }
-
-            /// <summary>
-            /// вызывает попытку перезарядить оружие
-            /// </summary>
-            /// <returns>Возвращает true в случае, если началась перезарядка</returns>
-            public virtual bool TryReload()
-            {
-                if (isReloading) return false;
-                if (_ammo >= weaponData.magazineAmount) return false;
-                StartCoroutine(Reload());
-                return true;
-            }
-
-            /// <summary>
-            /// перезаряжает оружие
-            /// </summary>
-            protected virtual IEnumerator Reload()
-            {
-                isReloading = true;
-                if (!_weaponOwner.isBot) ScreenGUI.instance.UpdateAmmoText(_weaponOwner);
-                if (animator != null) animator.SetTrigger("StartReload");
-                yield return new WaitForSeconds(weaponData.reloadTime);
-                isReloading = false;
-                Ammo = weaponData.magazineAmount;
-                if (!_weaponOwner.isBot) ScreenGUI.instance.UpdateAmmoText(_weaponOwner);
-                if (animator != null) animator.SetTrigger("EndReload");
-            }
-
-            public void SetOwner(Unit owner)
-            {
-                _weaponOwner = owner;
+                ScreenGUI.instance.UpdateAmmoText(_weaponOwner);
             }
         }
 
+        /// <summary>
+        /// вызывает попытку перезарядить оружие
+        /// </summary>
+        /// <returns>Возвращает true в случае, если началась перезарядка</returns>
+        public virtual bool TryReload()
+        {
+            if (isReloading) return false;
+            if (_ammo >= weaponData.magazineAmount) return false;
+            StartCoroutine(Reload());
+            return true;
+        }
 
+        /// <summary>
+        /// перезаряжает оружие
+        /// </summary>
+        protected virtual IEnumerator Reload()
+        {
+            _isReloading = true;
+            if (!_weaponOwner.player.isBot)
+            {
+                ScreenGUI.instance.UpdateAmmoText(_weaponOwner);
+            }
+            if (animator != null)
+            {
+                animator.SetTrigger("StartReload");
+            }
+            yield return new WaitForSeconds(weaponData.reloadTime);
+            _isReloading = false;
+            _ammo = weaponData.magazineAmount;
+            if (!_weaponOwner.player.isBot)
+            {
+                ScreenGUI.instance.UpdateAmmoText(_weaponOwner);
+            }
+            if (animator != null)
+            {
+                animator.SetTrigger("EndReload");
+            }
+        }
+
+        /// <summary>
+        /// когда игрок начинает стрелять
+        /// </summary>
+        protected virtual void OnShootingStart()
+        {
+            _weaponOwner.unitStats.AddAbility(weaponData.shootingAbility);
+        }
+
+        /// <summary>
+        /// когда игрок завершил стрельбу (срабатывает если fireRate уже позволяет выстрелить снова, но игрок не стреляет)
+        /// </summary>
+        protected virtual void OnShootingEnd()
+        {
+            _weaponOwner.unitStats.RemoveAbility(weaponData.shootingAbility);
+        }
+
+        private IEnumerator CheckForStootingEnd()
+        {
+            _isShooting = true;
+            while (_isShooting)
+            {
+                //умножаем на 1.1 потому что ждать нужно буквально чуть дольше, чем интервал между выстрелами при зажатой клавише
+                yield return new WaitForSeconds((1 / weaponData.fireRate) * 1.1f);
+                if (Time.time - _lastShotTime > 1 / weaponData.fireRate)
+                {
+                    _isShooting = false;
+                    OnShootingEnd();
+                }
+            }            
+        }
+
+    }
 }
 

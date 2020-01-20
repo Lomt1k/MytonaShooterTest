@@ -8,66 +8,37 @@ namespace MyTonaShooterTest.Units
     {
         static Spawner _instance;
 
-        public GameObject playerPrefab;
-        public GameObject botPrefab;
+        public GameObject unitPrefab;
         public Transform[] unitSpawns;
 
 
         public static Spawner instance
         {
             get => _instance;
+        }       
+
+        //спавн юнита
+        public Unit SpawnUnit(Player player)
+        {
+            //спавним юнита
+            int rand = Random.Range(0, unitSpawns.Length);
+            GameObject go = Instantiate(player.unitPrefab, unitSpawns[rand].position, unitSpawns[rand].rotation);
+            Unit unit = go.GetComponent<Unit>();
+            unit.SetPlayer(player);
+            UnitsHolder.units.Add(unit);
+            //цепляем камеру за юнитом, если это игрок
+            if (player.isBot == false)
+            {
+                Camera.main.GetComponent<CameraFollow>().FollowTo(go.transform);
+            }
+            return unit;
         }
 
-
-        // Start is called before the first frame update
         void Start()
         {
             _instance = this;
-
-            SpawnUnit(playerPrefab, 0);
-            //test
-            for (int i = 0; i < 4; i++)
-            {
-                SpawnUnit(botPrefab, i);
-            }
         }
 
-        // Update is called once per frame
-        void Update()
-        {
-
-        }
-
-        //спавн юнита
-        public GameObject SpawnUnit(GameObject unitPrefab, int teamid)
-        {
-            //проверяем - является ли префаб юнитом
-            if (unitPrefab.GetComponent<Unit>() == null) return null;
-
-            //спавним юнита
-            int rand = Random.Range(0, unitSpawns.Length);
-            GameObject obj = Instantiate(unitPrefab, unitSpawns[rand].position, unitSpawns[rand].rotation);
-            Unit unit = obj.GetComponent<Unit>();
-            unit.SetTeam(teamid);
-            UnitsHolder.units.Add(unit);
-            //цепляем камеру за юнитом, если это игрок
-            if (unit.isBot == false)
-            {
-                Camera.main.GetComponent<CameraFollow>().FollowTo(obj.transform);
-            }
-            return obj;
-        }
-
-        public void SpawnUnit(GameObject unitPrefab, int teamid, float time)
-        {
-            StartCoroutine(RequestSpawnUnit(unitPrefab, teamid, time));
-        }
-
-        private IEnumerator RequestSpawnUnit(GameObject unitPrefab, int teamid, float time)
-        {
-            yield return new WaitForSeconds(time);
-            SpawnUnit(unitPrefab, teamid);
-        }
     }
 
 }

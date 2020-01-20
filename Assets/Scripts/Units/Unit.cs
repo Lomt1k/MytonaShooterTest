@@ -1,9 +1,9 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.AI;
 using MyTonaShooterTest.Weapons;
+using MyTonaShooterTest.UI;
 
 namespace MyTonaShooterTest.Units
 {
@@ -13,42 +13,49 @@ namespace MyTonaShooterTest.Units
         public WeaponHolder weaponHolder;
         public float health = 100f;
         public Slider healthBar; //hp бар над ботом
-        public bool isBot = false; //юнит является ботом
+        public Image healthBarFill; 
         public GameObject[] spawnWeapons; //оружие, которое юнит получает при спавне
-        public float deadBodyLifetime = 3f; //время, которое будет существовать труп после смерти юнита
+        public float respawnTime = 5f; //время до респавна после смерти (у ботов)
         public float deadBodyForce = 100f; //сила, применяемая к Rigidbody в момент смерти юнита (для падения юнита по физике)
-        public float respawnTime = 5f; //задержка перед респавном юнита после смерти
         public UnitStats unitStats; //класс, который хранит и обрабатывает статы игрока
         public UnitStatsData defaultUnitStats; //Scriptable Object класс, из которого подгружаются статы по умолначию
 
-        //ABILITY TEST временное поле для абилок
-        public Ability testAbilityAddsOnPressKeyE;
+        private Player _player; //игрок, которому принадлежит юнит
 
-        int _teamid;
+        public Player player => _player;
 
-        public int teamid
+        public void SetPlayer(Player player)
         {
-            get => _teamid;
+            _player = player;
         }
 
-        public void SetTeam(int teamid)
+        private void Start()
         {
-            _teamid = teamid;
-        }
-
-        void Start()
-        {
-            if (!isBot) ScreenGUI.instance.UpdateHealthBar(health);
+            if (!player.isBot)
+            {
+                ScreenGUI.instance.UpdateHealthBar(health);
+                healthBar.gameObject.SetActive(false);
+            }
+            gameObject.name = "unit " + player.nickname;
             //инициализируем unitStats, подгружая в него значения статов по умолчанию из defaultUnitStats
             unitStats = new UnitStats(defaultUnitStats);
             unitStats.SetOwner(this);
+
+            //применяем логику спавна из конкретного игрового режима
+            GameManager.instance.gameMode.OnPlayerSpawn(player);
+
+            //зеленый цвет hp бара у союзников
+            if (player.teamID == Player.mine.teamID)
+            {
+                healthBarFill.color = Color.green;
+            }
         }
 
         // Update is called once per frame
-        void Update()
+        private void Update()
         {
             //управление игроком
-            if (!this.isBot)
+            if (!player.isBot)
             {
                 CheckPlayerInputs();
             }
@@ -66,12 +73,12 @@ namespace MyTonaShooterTest.Units
         /// <summary>
         /// обрабатывает нажатия клавиш игрока
         /// </summary>
-        void CheckPlayerInputs()
+        private void CheckPlayerInputs()
         {
             if (!isAlive) return;
             //передвижение
             Vector3 moveDir = new Vector3(Input.GetAxisRaw("Horizontal"), 0f, Input.GetAxisRaw("Vertical"));
-            characterController.Move(moveDir * unitStats.moveSpeed * Time.deltaTime);
+            characterController.Move(moveDir * unitStats.moveSpeed.value * Time.deltaTime);
 
             //поворот игрока в сторону курсора
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
@@ -102,13 +109,12 @@ namespace MyTonaShooterTest.Units
                 else weaponHolder.SelectPrevWeapon();
             }
 
-            //ABILITY TEST временный код для теста абилок
-            if (Input.GetKeyDown(KeyCode.E))
-            {
-                unitStats.AddAbility(testAbilityAddsOnPressKeyE);
-                print("Damage Mult: " + unitStats.dagameMult);
-            }
+        }
 
+        private void OnDestroy()
+        {
+            //удаляем юнита из списка юнитов
+            UnitsHolder.units.Remove(this);
         }
 
         /// <summary>
@@ -120,18 +126,21 @@ namespace MyTonaShooterTest.Units
         public void TakeDamage(Unit attacker, Weapon weapon, float damage)
         {
             //применяем модификаторы урона
-            damage *= attacker.unitStats.dagameMult * unitStats.incomingDamageMult;
+            damage *= attacker.unitStats.damageMult.value * unitStats.incomingDamageMult.value;
 
             if (health <= 0) return;
             health -= damage;
             UpdateHealthBar();//Health UI
-            if (health <= 0) Die();
+            if (health <= 0) Die(attacker, weapon);
         }
 
         //обновление здоровья в UI
         public void UpdateHealthBar()
         {
-            if (!isBot) ScreenGUI.instance.UpdateHealthBar(health); //обновление hp на экране
+            if (!player.isBot)
+            {
+                ScreenGUI.instance.UpdateHealthBar(health); //обновление hp на экране
+            }
             //обновление hp в баре над юнитом
             if (healthBar != null)
             {
@@ -140,7 +149,7 @@ namespace MyTonaShooterTest.Units
         }
 
         // срабатывает в момент смерти персонажа
-        public void Die()
+        public void Die(Unit attacker = null, Weapon weapon = null)
         {
             //отключаем лишние компоненты
             characterController.enabled = false;
@@ -152,19 +161,37 @@ namespace MyTonaShooterTest.Units
             //добавляем RiridBody для падения трупа по физике
             Rigidbody rb = gameObject.AddComponent<Rigidbody>();
             rb.AddForce(-transform.forward * deadBodyForce);
-            Destroy(gameObject, deadBodyLifetime);
-            if (!isBot) ScreenGUI.instance.storedPlayerTeamid = teamid; //не лучший способ передачи teamid для респавна игрока..
-            //удаляем юнита из списка юнитов
-            UnitsHolder.units.Remove(this);
 
-            //Респавн
-            if (isBot) Spawner.instance.SpawnUnit(Spawner.instance.botPrefab, teamid, respawnTime);
-            else ScreenGUI.instance.ShowDeathMenu();
+            //отправляем игровому режиму информацию о смерти (убийстве)
+            if (attacker == null)
+            {
+                GameManager.instance.gameMode.OnPlayerDeath(player);
+            }
+            else
+            {
+                GameManager.instance.gameMode.OnPlayerDeath(player, attacker.player, weapon);
+            }
+            
+            //респавн
+            if (player.isBot)
+            {
+                StartCoroutine(RequestRespawnAtTime(respawnTime));
+            }
+            else
+            {
+                ScreenGUI.instance.ShowDeathMenu();
+            }
         }
 
         public bool isAlive
         {
             get => (health > 0) ? true : false;
+        }
+
+        private IEnumerator RequestRespawnAtTime(float time)
+        {
+            yield return new WaitForSeconds(time);
+            player.Respawn();
         }
 
 

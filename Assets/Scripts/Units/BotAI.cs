@@ -1,5 +1,4 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -20,14 +19,16 @@ namespace MyTonaShooterTest
             // Start is called before the first frame update
             void Start()
             {
-                LoadUnitStats();
+                if (!unit.player.isBot)
+                {
+                    agent.enabled = false;
+                    this.enabled = false;
+                    return;
+                }
+
                 MoveToNextWayPoint();
                 StartCoroutine(CheckForEnemy(enemyCheckTime));
-            }
-
-            public void LoadUnitStats()
-            {
-                agent.speed = unit.unitStats.moveSpeed;
+                unit.unitStats.ReloadStats();
             }
 
 
@@ -95,7 +96,7 @@ namespace MyTonaShooterTest
                     if (unit == this.unit) continue;
                     if (Vector3.Distance(unit.transform.position, transform.position) > viewDistance) continue;
                     if (Vector3.Distance(unit.transform.position, transform.position) > closestEnemyDistance) continue; //уже найден доступный противник на более близкой дистанции
-                    if (unit.teamid == this.unit.teamid) continue;
+                    if (unit.player.teamID == this.unit.player.teamID) continue;
 
                     //проверяем, что ничего не мешает стрелять во врага
                     Ray ray = new Ray(transform.position, unit.transform.position);

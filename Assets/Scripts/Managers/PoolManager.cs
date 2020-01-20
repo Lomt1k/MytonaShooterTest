@@ -1,7 +1,5 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
-using MyTonaShooterTest.VFX;
 
 public class PoolManager<T> where T: IPoolObject
 {
@@ -19,8 +17,9 @@ public class PoolManager<T> where T: IPoolObject
     {
         for (int i = 0; i < count; i++)
         {
-            var newObject = GameObject.Instantiate(poolObject, Vector3.zero, Quaternion.identity).GetComponent<T>();
-            objectPool.Enqueue(newObject);        
+            GameObject go = GameObject.Instantiate(poolObject, Vector3.zero, Quaternion.identity);
+            go.SetActive(false);
+            objectPool.Enqueue(go.GetComponent<T>());
         }       
     }
 
