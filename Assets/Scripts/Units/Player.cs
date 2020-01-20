@@ -4,15 +4,34 @@ using MyTonaShooterTest.Units;
 public class Player 
 {
     public Unit unit;
+    public int kills;
+    public int deaths;
 
     private GameObject _unitPrefab;
     private int _teamID;
     private bool _isBot;
+    private string _nickname;
 
     public static Player mine;
     public GameObject unitPrefab => _unitPrefab;
     public int teamID => _teamID;
     public bool isBot => _isBot;
+    public string nickname => _nickname;
+
+    private string[] botnames =
+    {
+        "Eddie",
+        "Freddie",
+        "Teddy",
+        "Ivan",
+        "Feodor",
+        "Alex",
+        "Denis",
+        "Stan",
+        "Kyle",
+        "Eric",
+        "Kenny"
+    };
 
     public Player(GameObject unitPrefab, bool isBot, int teamID = 0)
     {        
@@ -23,6 +42,11 @@ public class Player
         if (!isBot)
         {
             mine = this;
+            _nickname = "Player";            
+        }
+        else
+        {
+            _nickname = botnames[Random.Range(0, botnames.Length)];
         }
     }
 

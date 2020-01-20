@@ -17,14 +17,13 @@ namespace MyTonaShooterTest.UI
         public Slider healthBar;
         public Text ammoText;
         public GameObject deathPanel;
+        public Text killDeathText;
+        public Text matchTime;
+        public GameObject tdm_panel;
+        public Text tdm_teamScoreA;
+        public Text tdm_teamScoreB;
 
         public int storedPlayerTeamid; //сюда кладется teamid игрока при смерти, который присваивается игроку при респавне
-
-        // Start is called before the first frame update
-        void Start()
-        {
-            _instance = this;
-        }
 
         public void UpdateHealthBar(float hp)
         {
@@ -49,6 +48,28 @@ namespace MyTonaShooterTest.UI
             else ammoText.text = "";
         }
 
+        public void UpdatePlayerScore()
+        {
+            killDeathText.text = $"Kills: {Player.mine.kills} \nDeaths: {Player.mine.deaths}";
+        }
+
+        public void UpdateMatchTime(int time)
+        {
+            int minutes = time / 60;
+            int seconds = time - minutes * 60;
+            matchTime.text = minutes + ":" + ((seconds / 10 > 0) ? seconds.ToString() : "0" + seconds);   
+        }
+
+        public void UpdateTeamScore()
+        {
+            if (GameManager.instance.gameMode is TeamDeathMatch)
+            {
+                TeamDeathMatch tdm = (TeamDeathMatch)GameManager.instance.gameMode;
+                tdm_teamScoreA.text = tdm.team_kills[0].ToString();
+                tdm_teamScoreB.text = tdm.team_kills[1].ToString();
+            }
+        }
+
         public void ShowDeathMenu()
         {
             deathPanel.SetActive(true);
@@ -62,6 +83,13 @@ namespace MyTonaShooterTest.UI
             healthBar.gameObject.SetActive(true);
             ammoText.gameObject.SetActive(true);
             Player.mine.Respawn();
+        }
+
+
+
+        void Start()
+        {
+            _instance = this;
         }
 
     }

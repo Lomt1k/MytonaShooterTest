@@ -58,7 +58,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.41006586, g: 0.9150943, b: 0.60926694, a: 1}
+  m_Color: {r: 0.9137255, g: 0.41176477, b: 0.4742722, a: 1}
   m_RaycastTarget: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
@@ -540,7 +540,7 @@ GameObject:
   - component: {fileID: 805706423763541357}
   - component: {fileID: 6019224539710722442}
   m_Layer: 8
-  m_Name: Player
+  m_Name: UnitPrefab
   m_TagString: Unit
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -639,6 +639,7 @@ MonoBehaviour:
   weaponHolder: {fileID: 7466078490009956227}
   health: 100
   healthBar: {fileID: 2482174796659138894}
+  healthBarFill: {fileID: 3444566420323992635}
   spawnWeapons:
   - {fileID: 3067795215945768939, guid: 31957ad44eab4414c934c4d4bddd2d87, type: 3}
   - {fileID: 815377813719514020, guid: 0220e48358ff04648ad9078b0973383e, type: 3}

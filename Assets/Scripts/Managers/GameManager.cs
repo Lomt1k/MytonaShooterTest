@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using UnityEngine;
 using MyTonaShooterTest.VFX;
+using MyTonaShooterTest.UI;
 
 public class GameManager : MonoBehaviour
 {
@@ -28,16 +29,34 @@ public class GameManager : MonoBehaviour
     private IEnumerator InitGameMode(float time)
     {
         yield return new WaitForSeconds(time);
-        switch (SceneLoader.instance.gameModeType)
+        //когда игра запустилась из редактора Unity (непосредственно с игровой сцены)
+        if (SceneLoader.instance == null)
         {
-            case GameModeType.DeathMatch:
-                _gameMode = new DeathMatch(SceneLoader.instance.players, SceneLoader.instance.time);
-                break;
-            case GameModeType.TeamDeathMatch:
-                _gameMode = new TeamDeathMatch(SceneLoader.instance.players, SceneLoader.instance.time);
-                break;
+            _gameMode = new DeathMatch(6, 15);
         }
-        
+        //когда игра корректно запустилась из главного меню
+        else
+        {
+            switch (SceneLoader.instance.gameModeType)
+            {
+                case GameModeType.DeathMatch:
+                    _gameMode = new DeathMatch(SceneLoader.instance.players, SceneLoader.instance.time);
+                    break;
+                case GameModeType.TeamDeathMatch:
+                    _gameMode = new TeamDeathMatch(SceneLoader.instance.players, SceneLoader.instance.time);
+                    break;
+            }
+        }
+        StartCoroutine(SecUpdate());
+    }
+
+    public virtual IEnumerator SecUpdate()
+    {
+        while (gameMode.timeToEnd > 0)
+        {
+            yield return new WaitForSeconds(1);
+            gameMode.OnSecUpdate();
+        }
     }
 
 }

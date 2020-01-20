@@ -13,6 +13,7 @@ namespace MyTonaShooterTest.Units
         public WeaponHolder weaponHolder;
         public float health = 100f;
         public Slider healthBar; //hp бар над ботом
+        public Image healthBarFill; 
         public GameObject[] spawnWeapons; //оружие, которое юнит получает при спавне
         public float respawnTime = 5f; //время до респавна после смерти (у ботов)
         public float deadBodyForce = 100f; //сила, применяемая к Rigidbody в момент смерти юнита (для падения юнита по физике)
@@ -28,23 +29,30 @@ namespace MyTonaShooterTest.Units
             _player = player;
         }
 
-        void Start()
+        private void Start()
         {
             if (!player.isBot)
             {
                 ScreenGUI.instance.UpdateHealthBar(health);
                 healthBar.gameObject.SetActive(false);
             }
+            gameObject.name = "unit " + player.nickname;
             //инициализируем unitStats, подгружая в него значения статов по умолчанию из defaultUnitStats
             unitStats = new UnitStats(defaultUnitStats);
             unitStats.SetOwner(this);
 
             //применяем логику спавна из конкретного игрового режима
             GameManager.instance.gameMode.OnPlayerSpawn(player);
+
+            //зеленый цвет hp бара у союзников
+            if (player.teamID == Player.mine.teamID)
+            {
+                healthBarFill.color = Color.green;
+            }
         }
 
         // Update is called once per frame
-        void Update()
+        private void Update()
         {
             //управление игроком
             if (!player.isBot)
@@ -65,7 +73,7 @@ namespace MyTonaShooterTest.Units
         /// <summary>
         /// обрабатывает нажатия клавиш игрока
         /// </summary>
-        void CheckPlayerInputs()
+        private void CheckPlayerInputs()
         {
             if (!isAlive) return;
             //передвижение
@@ -103,6 +111,12 @@ namespace MyTonaShooterTest.Units
 
         }
 
+        private void OnDestroy()
+        {
+            //удаляем юнита из списка юнитов
+            UnitsHolder.units.Remove(this);
+        }
+
         /// <summary>
         /// обрабатывает входящий урон
         /// </summary>
@@ -117,7 +131,7 @@ namespace MyTonaShooterTest.Units
             if (health <= 0) return;
             health -= damage;
             UpdateHealthBar();//Health UI
-            if (health <= 0) Die();
+            if (health <= 0) Die(attacker, weapon);
         }
 
         //обновление здоровья в UI
@@ -135,7 +149,7 @@ namespace MyTonaShooterTest.Units
         }
 
         // срабатывает в момент смерти персонажа
-        public void Die()
+        public void Die(Unit attacker = null, Weapon weapon = null)
         {
             //отключаем лишние компоненты
             characterController.enabled = false;
@@ -147,9 +161,18 @@ namespace MyTonaShooterTest.Units
             //добавляем RiridBody для падения трупа по физике
             Rigidbody rb = gameObject.AddComponent<Rigidbody>();
             rb.AddForce(-transform.forward * deadBodyForce);
-            //удаляем юнита из списка юнитов
-            UnitsHolder.units.Remove(this);
 
+            //отправляем игровому режиму информацию о смерти (убийстве)
+            if (attacker == null)
+            {
+                GameManager.instance.gameMode.OnPlayerDeath(player);
+            }
+            else
+            {
+                GameManager.instance.gameMode.OnPlayerDeath(player, attacker.player, weapon);
+            }
+            
+            //респавн
             if (player.isBot)
             {
                 StartCoroutine(RequestRespawnAtTime(respawnTime));

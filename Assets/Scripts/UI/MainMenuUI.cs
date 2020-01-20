@@ -15,17 +15,22 @@ public class MainMenuUI : MonoBehaviour
     public Button buttonTDM;
     public InputField playersField;
     public InputField timeField;
+    public Color selectedColor;
 
     private GameModeType _selectedGameMode;
 
     public void ButtonDM()
     {
         _selectedGameMode = GameModeType.DeathMatch;
+        buttonDM.image.color = selectedColor;
+        buttonTDM.image.color = Color.white;
     }
 
     public void ButtonTDM()
     {
         _selectedGameMode = GameModeType.TeamDeathMatch;
+        buttonTDM.image.color = selectedColor;
+        buttonDM.image.color = Color.white;
     }
 
     public void PlayButton()
