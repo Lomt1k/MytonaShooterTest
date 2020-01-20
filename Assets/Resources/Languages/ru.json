@@ -1,0 +1,19 @@
+{
+  "menu_inputFieldPlayers": "Игроков...",
+  "menu_inputFieldTime": "Время...",
+  "menu_playButton": "ИГРАТЬ",
+  
+  "screenGUI_kills": "Убийств",
+  "screenGUI_deaths": "Смертей",
+  "screenGUI_reloading": "[ПЕРЕЗАРЯДКА]",
+  "screnGUI_backToMenu": "ВЕРНУТЬСЯ В МЕНЮ",
+
+  "dm_ends": "Десматч Завершен",
+  "dm_wins": "{0} победил с {1} убийствами",
+  "dm_name": "Имя",
+
+  "tdm_ends": "Командный Десматч Завешен",
+  "tdm_win_green": "Победила <color=green>зеленая команда</color> (Счет {0}:{1})",
+  "tdm_win_red": "Победила <color=red>красная команда</color> (Счет {0}:{1})",
+  "tdm_draw": "Это ничья (Счет {0}:{1})",
+}

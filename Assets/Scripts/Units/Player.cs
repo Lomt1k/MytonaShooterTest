@@ -20,8 +20,8 @@ public class Player
 
     private string[] botnames =
     {
-        "Eddie",
-        "Freddie",
+        "Eddy",
+        "Freddy",
         "Teddy",
         "Ivan",
         "Feodor",
@@ -30,7 +30,12 @@ public class Player
         "Stan",
         "Kyle",
         "Eric",
-        "Kenny"
+        "Kenny",
+        "Max",
+        "Dozer",
+        "Tank",
+        "Morpheus",
+        "Neo"
     };
 
     public Player(GameObject unitPrefab, bool isBot, int teamID = 0)

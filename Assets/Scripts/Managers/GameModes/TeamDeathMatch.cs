@@ -1,6 +1,9 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using System.Linq;
+using UnityEngine;
 using MyTonaShooterTest.Weapons;
 using MyTonaShooterTest.UI;
+using MyTonaShooterTest.Languages;
 
 public class TeamDeathMatch : GameMode
 {
@@ -61,24 +64,54 @@ public class TeamDeathMatch : GameMode
 
     public override void OnMatchEnd()
     {
-        Debug.Log("Командный Десматч завершен!");
+        //сортируем игроков по победившей команде, по наибольшему количеству убийств и наименьшему числу смертей
+        List<Player> sortedPlayers;
         if (team_kills[0] == team_kills[1])
         {
-            Debug.Log($"Результат: Ничья (Счет {team_kills[0]}:{team_kills[1]})");
+            sortedPlayers = players.OrderByDescending(x => x.kills).ThenBy(x => x.deaths).ToList();
+            string sub = string.Format(Language.data["tdm_draw"], team_kills[0], team_kills[1]);
+            ScreenGUI.instance.results_sub.text = sub;
         }
         else if (team_kills[0] > team_kills[1])
         {
-            Debug.Log($"Результат: Победила зеленая команда (Счет {team_kills[0]}:{team_kills[1]})");
+            sortedPlayers = players.OrderBy(x => x.teamID).ThenByDescending(x => x.kills).ThenBy(x => x.deaths).ToList();
+            string sub = string.Format(Language.data["tdm_win_green"], team_kills[0], team_kills[1]);
+            ScreenGUI.instance.results_sub.text = sub;
         }
         else
         {
-            Debug.Log($"Результат: Победила красная команда (Счет {team_kills[1]}:{team_kills[0]})");
-        }
+            sortedPlayers = players.OrderByDescending(x => x.teamID).ThenByDescending(x => x.kills).ThenBy(x => x.deaths).ToList();
+            string sub = string.Format(Language.data["tdm_win_red"], team_kills[1], team_kills[0]);
+            ScreenGUI.instance.results_sub.text = sub;
+        }        
 
-        foreach (Player player in players)
+        //отображаем результаты матча
+        ScreenGUI.instance.results_title.text = Language.data["tdm_ends"];
+        ScreenGUI.instance.results_header_name.text = Language.data["dm_name"];
+        ScreenGUI.instance.results_header_kills.text = Language.data["screenGUI_kills"];
+        ScreenGUI.instance.results_header_deaths.text = Language.data["screenGUI_deaths"];
+        ScreenGUI.instance.results_back_to_menu.text = Language.data["screnGUI_backToMenu"];
+
+        string list_names = "";
+        string list_kills = "";
+        string list_deaths = "";
+        foreach (Player player in sortedPlayers)
         {
-            string result = $"{player.nickname} | Kills: {player.kills} | Deaths: {player.deaths}";
-            Debug.Log(result);
+            if (player.teamID == 0)
+            {
+                list_names += $"<color=green>{player.nickname}</color>\n";
+                list_kills += $"<color=green>{player.kills}</color>\n";
+                list_deaths += $"<color=green>{player.deaths}</color>\n";
+            }
+            else
+            {
+                list_names += $"<color=red>{player.nickname}</color>\n";
+                list_kills += $"<color=red>{player.kills}</color>\n";
+                list_deaths += $"<color=red>{player.deaths}</color>\n";
+            }            
         }
+        ScreenGUI.instance.results_names_list.text = list_names;
+        ScreenGUI.instance.results_kills_list.text = list_kills;
+        ScreenGUI.instance.reslts_deaths_list.text = list_deaths;
     }
 }

@@ -1,7 +1,9 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 using MyTonaShooterTest.Weapons;
 using MyTonaShooterTest.Units;
+using MyTonaShooterTest.Languages;
 
 namespace MyTonaShooterTest.UI
 {
@@ -17,13 +19,23 @@ namespace MyTonaShooterTest.UI
         public Slider healthBar;
         public Text ammoText;
         public GameObject deathPanel;
+        public GameObject killDeathPanel;
         public Text killDeathText;
+        public GameObject matchTimePanel;
         public Text matchTime;
         public GameObject tdm_panel;
         public Text tdm_teamScoreA;
         public Text tdm_teamScoreB;
-
-        public int storedPlayerTeamid; //сюда кладется teamid игрока при смерти, который присваивается игроку при респавне
+        public GameObject results_panel;
+        public Text results_title;
+        public Text results_sub;
+        public Text results_header_name;
+        public Text results_header_kills;
+        public Text results_header_deaths;
+        public Text results_names_list;
+        public Text results_kills_list;
+        public Text reslts_deaths_list;
+        public Text results_back_to_menu;
 
         public void UpdateHealthBar(float hp)
         {
@@ -38,7 +50,7 @@ namespace MyTonaShooterTest.UI
             {
                 if (weap.isReloading)
                 {
-                    ammoText.text = "<color=red>[ПЕРЕЗАРЯДКА]</color>";
+                    ammoText.text = $"<color=red>{Language.data["screenGUI_reloading"]}</color>";
                 }
                 else
                 {
@@ -50,7 +62,7 @@ namespace MyTonaShooterTest.UI
 
         public void UpdatePlayerScore()
         {
-            killDeathText.text = $"Kills: {Player.mine.kills} \nDeaths: {Player.mine.deaths}";
+            killDeathText.text = $"{Language.data["screenGUI_kills"]}: {Player.mine.kills} \n{Language.data["screenGUI_deaths"]}: {Player.mine.deaths}";
         }
 
         public void UpdateMatchTime(int time)
@@ -83,6 +95,22 @@ namespace MyTonaShooterTest.UI
             healthBar.gameObject.SetActive(true);
             ammoText.gameObject.SetActive(true);
             Player.mine.Respawn();
+        }
+
+        public void ShowResultsMenu()
+        {
+            deathPanel.SetActive(false);
+            healthBar.gameObject.SetActive(false);
+            ammoText.gameObject.SetActive(false);
+            matchTimePanel.SetActive(false);
+            tdm_panel.SetActive(false);
+            killDeathPanel.SetActive(false);
+            results_panel.SetActive(true);
+        }
+
+        public void BackToMenuButton()
+        {
+            SceneManager.LoadScene("MainMenu");
         }
 
 
