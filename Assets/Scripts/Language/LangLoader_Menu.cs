@@ -10,7 +10,7 @@ namespace MyTonaShooterTest.Languages
         public Text playButton;
 
         // Start is called before the first frame update
-        void Start()
+        private void Start()
         {
             inputFieldPlayers.text = Language.data["menu_inputFieldPlayers"];
             inputFieldTime.text = Language.data["menu_inputFieldTime"];            

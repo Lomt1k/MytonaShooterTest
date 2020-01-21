@@ -39,7 +39,10 @@ namespace MyTonaShooterTest.VFX
         {
             transform.Translate(-transform.forward * moveSpeed);
             maxDistance -= moveSpeed;
-            if (maxDistance <= 0f) OnPush();
+            if (maxDistance <= 0f)
+            {
+                OnPush();
+            }
         }
 
         private IEnumerator DestroyBulletInTime(float time)

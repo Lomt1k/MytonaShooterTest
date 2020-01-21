@@ -3,40 +3,40 @@ using UnityEngine;
 
 public class PoolManager<T> where T: IPoolObject
 {
-    Queue<T> objectPool;
-    GameObject poolObject;
+    private Queue<T> _objectPool;
+    private GameObject _poolObject;
 
     public PoolManager(GameObject go, int count)
     {
-        objectPool = new Queue<T>();
-        poolObject = go; 
+        _objectPool = new Queue<T>();
+        _poolObject = go; 
         CreateStartObjects(count);
-    }
-         
-    private void CreateStartObjects(int count = 1)
-    {
-        for (int i = 0; i < count; i++)
-        {
-            GameObject go = GameObject.Instantiate(poolObject, Vector3.zero, Quaternion.identity);
-            go.SetActive(false);
-            objectPool.Enqueue(go.GetComponent<T>());
-        }       
     }
 
     public T GetPoolObject()
     {
-        if (objectPool.Count < 1)
+        if (_objectPool.Count < 1)
         {
             CreateStartObjects();
         }
-        T obj = objectPool.Dequeue();
+        T obj = _objectPool.Dequeue();
         obj.OnPop();
         return obj;
     }
 
     public void Push(T poolObject)
     {
-        objectPool.Enqueue(poolObject);
+        _objectPool.Enqueue(poolObject);
+    }
+
+    private void CreateStartObjects(int count = 1)
+    {
+        for (int i = 0; i < count; i++)
+        {
+            GameObject go = GameObject.Instantiate(_poolObject, Vector3.zero, Quaternion.identity);
+            go.SetActive(false);
+            _objectPool.Enqueue(go.GetComponent<T>());
+        }       
     }
 
 }

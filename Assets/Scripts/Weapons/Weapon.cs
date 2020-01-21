@@ -1,5 +1,4 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using MyTonaShooterTest.Units;
 using MyTonaShooterTest.UI;
@@ -28,31 +27,46 @@ namespace MyTonaShooterTest.Weapons
             _weaponOwner = owner;
         }
 
-        void Start()
-        {
-            OnStart();
-        }
-
-        protected virtual void OnStart()
-        {
-            _ammo = weaponData.magazineAmount;
-        }
-
         /// <summary>
         /// вызывает попытку выстрелить из оружия
         /// </summary>
         /// <returns>Возвращает true в случае успешного выстрела</returns>
         public virtual bool TryShot()
         {
+            if (isReloading)
+            {
+                return false;
+            }
             if (_ammo <= 0)
             {
                 TryReload();
                 return false;
             }
-            if (Time.time < 1f / (weaponData.fireRate * _weaponOwner.unitStats.attackSpeed.value) + _lastShotTime) return false;
-            if (isReloading) return false;
+            if (Time.time < 1f / (weaponData.fireRate * _weaponOwner.unitStats.attackSpeed.value) + _lastShotTime)
+            {
+                return false;
+            }
             Shot();
             return true;
+        }
+
+        /// <summary>
+        /// вызывает попытку перезарядить оружие
+        /// </summary>
+        /// <returns>Возвращает true в случае, если началась перезарядка</returns>
+        public virtual bool TryReload()
+        {
+            if (isReloading || _ammo >= weaponData.magazineAmount)
+            {
+                return false;
+            }
+            StartCoroutine(Reload());
+            return true;
+        }
+
+        protected virtual void OnStart()
+        {
+            _ammo = weaponData.magazineAmount;
         }
 
         /// <summary>
@@ -71,18 +85,6 @@ namespace MyTonaShooterTest.Weapons
             {
                 ScreenGUI.instance.UpdateAmmoText(_weaponOwner);
             }
-        }
-
-        /// <summary>
-        /// вызывает попытку перезарядить оружие
-        /// </summary>
-        /// <returns>Возвращает true в случае, если началась перезарядка</returns>
-        public virtual bool TryReload()
-        {
-            if (isReloading) return false;
-            if (_ammo >= weaponData.magazineAmount) return false;
-            StartCoroutine(Reload());
-            return true;
         }
 
         /// <summary>
@@ -126,6 +128,11 @@ namespace MyTonaShooterTest.Weapons
         protected virtual void OnShootingEnd()
         {
             _weaponOwner.unitStats.RemoveAbility(weaponData.shootingAbility);
+        }
+
+        private void Start()
+        {
+            OnStart();
         }
 
         private IEnumerator CheckForStootingEnd()

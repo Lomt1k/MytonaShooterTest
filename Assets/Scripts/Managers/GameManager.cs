@@ -1,7 +1,6 @@
 ﻿using System.Collections;
 using UnityEngine;
 using MyTonaShooterTest.VFX;
-using MyTonaShooterTest.UI;
 
 public class GameManager : MonoBehaviour
 {
@@ -50,7 +49,7 @@ public class GameManager : MonoBehaviour
         StartCoroutine(SecUpdate());
     }
 
-    public virtual IEnumerator SecUpdate()
+    protected virtual IEnumerator SecUpdate()
     {
         while (gameMode.timeToEnd > 0)
         {
