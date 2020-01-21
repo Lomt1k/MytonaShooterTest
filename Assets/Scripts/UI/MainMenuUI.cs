@@ -47,7 +47,7 @@ public class MainMenuUI : MonoBehaviour
         }
         players = Mathf.Clamp(players, 1, 12);
         //time
-        int time = 30;
+        int time = 180;
         if (!String.IsNullOrEmpty(timeField.text))
         {
             time = Convert.ToInt32(timeField.text);

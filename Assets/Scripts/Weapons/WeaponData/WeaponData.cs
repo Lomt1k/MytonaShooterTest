@@ -17,7 +17,7 @@ namespace MyTonaShooterTest.Weapons
         public GameObject bulletPrefab; //префаб пули (визуал)
         public float bulletLifetime = 1f; //время до уничтожения пули (визуал)
         public float bulletSpeed = 1500f; //скорость полета пули (визуал)
-
+        public Sprite icon; //иконка оружия (для килл-листа)
     }
 }
 

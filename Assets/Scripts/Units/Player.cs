@@ -34,8 +34,8 @@ public class Player
         "Max",
         "Dozer",
         "Tank",
-        "Morpheus",
-        "Neo"
+        "Neo",
+        "Gas"
     };
 
     public Player(GameObject unitPrefab, bool isBot, int teamID = 0)

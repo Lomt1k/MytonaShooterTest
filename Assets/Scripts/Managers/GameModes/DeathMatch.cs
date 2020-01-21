@@ -27,6 +27,12 @@ public class DeathMatch : GameMode
         }
     }
 
+    public override void OnPlayerDeath(Player player, Player killer = null, Weapon weapon = null)
+    {
+        base.OnPlayerDeath(player, killer, weapon);
+        KillMessage(player, killer, weapon);
+    }
+
     public override void OnMatchEnd()
     {
         //сортируем игроков по наибольшему количеству убийств и наименьшему числу смертей
@@ -54,6 +60,21 @@ public class DeathMatch : GameMode
         ScreenGUI.instance.results_names_list.text = list_names;
         ScreenGUI.instance.results_kills_list.text = list_kills;
         ScreenGUI.instance.reslts_deaths_list.text = list_deaths;
-
     }
+
+    private void KillMessage(Player player, Player killer = null, Weapon weapon = null)
+    {
+        string killer_str = "";
+        if (killer != null)
+        {
+            killer_str = killer.nickname;
+        }
+        Sprite weapon_icon = null;
+        if (weapon != null)
+        {
+            weapon_icon = weapon.weaponData.icon;
+        }
+        KillList.instance.ShowDeathMessage(player.nickname, weapon_icon, killer_str);
+    }
+
 }

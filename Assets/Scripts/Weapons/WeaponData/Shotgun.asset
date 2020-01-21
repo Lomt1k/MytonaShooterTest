@@ -24,3 +24,4 @@ MonoBehaviour:
     type: 3}
   bulletLifetime: 0.5
   bulletSpeed: 2500
+  icon: {fileID: 21300000, guid: 8b656e053f408ab438859cb09c47c3b5, type: 3}

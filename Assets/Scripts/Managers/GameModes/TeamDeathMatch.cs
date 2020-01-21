@@ -51,6 +51,7 @@ public class TeamDeathMatch : GameMode
     public override void OnPlayerDeath(Player player, Player killer = null, Weapon weapon = null)
     {
         base.OnPlayerDeath(player, killer, weapon);
+        KillMessage(player, killer, weapon);
 
         if (killer != null)
         {
@@ -59,7 +60,7 @@ public class TeamDeathMatch : GameMode
                 _team_kills[killer.teamID]++;
                 ScreenGUI.instance.UpdateTeamScore();
             }
-        }
+        }        
     }
 
     public override void OnMatchEnd()
@@ -113,5 +114,38 @@ public class TeamDeathMatch : GameMode
         ScreenGUI.instance.results_names_list.text = list_names;
         ScreenGUI.instance.results_kills_list.text = list_kills;
         ScreenGUI.instance.reslts_deaths_list.text = list_deaths;
+    }
+
+    private void KillMessage(Player player, Player killer = null, Weapon weapon = null)
+    {
+        //victim
+        string victim_str = "";
+        if (player.teamID == 0)
+        {
+            victim_str = $"<color=green>{player.nickname}</color>";
+        }
+        else
+        {
+            victim_str = $"<color=red>{player.nickname}</color>";
+        }
+        //killer
+        string killer_str = "";
+        if (killer != null)
+        {
+            if (killer.teamID == 0)
+            {
+                killer_str = $"<color=green>{killer.nickname}</color>";
+            }
+            else
+            {
+                killer_str = $"<color=red>{killer.nickname}</color>";
+            }
+        }
+        Sprite weapon_icon = null;
+        if (weapon != null)
+        {
+            weapon_icon = weapon.weaponData.icon;
+        }
+        KillList.instance.ShowDeathMessage(victim_str, weapon_icon, killer_str);
     }
 }
