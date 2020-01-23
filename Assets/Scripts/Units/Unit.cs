@@ -19,6 +19,7 @@ namespace MyTonaShooterTest.Units
         public float deadBodyForce = 100f; //сила, применяемая к Rigidbody в момент смерти юнита (для падения юнита по физике)
         public UnitStats unitStats; //класс, который хранит и обрабатывает статы игрока
         public UnitStatsData defaultUnitStats; //Scriptable Object класс, из которого подгружаются статы по умолначию
+        public Transform crosshair; //прицел
 
         private Player _player; //игрок, которому принадлежит юнит
 
@@ -117,6 +118,7 @@ namespace MyTonaShooterTest.Units
             {
                 ScreenGUI.instance.UpdateHealthBar(health);
                 healthBar.gameObject.SetActive(false);
+                crosshair.gameObject.SetActive(true);
             }
             gameObject.name = "unit " + player.nickname;
             //инициализируем unitStats, подгружая в него значения статов по умолчанию из defaultUnitStats
@@ -148,8 +150,6 @@ namespace MyTonaShooterTest.Units
                 healthBar.gameObject.transform.LookAt(Camera.main.transform.position);
                 healthBar.gameObject.transform.Rotate(0f, 180f, 0f);
             }
-
-
         }
 
         /// <summary>
@@ -172,18 +172,19 @@ namespace MyTonaShooterTest.Units
             {
                 Vector3 lookPos = new Vector3(hit.point.x, transform.position.y, hit.point.z);
                 transform.LookAt(lookPos);
+                crosshair.transform.position = lookPos;
             }
 
             //стрельба из оружия
             if (Input.GetMouseButton(0))
             {
-                weaponHolder.armedWeapon?.TryShot();
+                weaponHolder.TryShot();
             }
 
             //перезарядка
             if (Input.GetKeyDown(KeyCode.R))
             {
-                weaponHolder.armedWeapon?.TryReload();
+                weaponHolder.TryReload();
             }
 
             //смена оружия
@@ -198,6 +199,16 @@ namespace MyTonaShooterTest.Units
                 {
                     weaponHolder.SelectPrevWeapon();
                 }
+            }
+
+            //гранаты
+            if (Input.GetKeyDown(KeyCode.G))
+            {
+                weaponHolder.GrenadeStartAiming();
+            }
+            else if (Input.GetKeyUp(KeyCode.G))
+            {
+                weaponHolder.GrenadeStopAiming();
             }
 
         }

@@ -33,7 +33,7 @@ public class PoolManager<T> where T: IPoolObject
     {
         for (int i = 0; i < count; i++)
         {
-            GameObject go = GameObject.Instantiate(_poolObject, Vector3.zero, Quaternion.identity);
+            GameObject go = GameObject.Instantiate(_poolObject, Vector3.zero, _poolObject.transform.rotation);
             go.SetActive(false);
             _objectPool.Enqueue(go.GetComponent<T>());
         }       

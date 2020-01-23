@@ -28,6 +28,10 @@ namespace MyTonaShooterTest.Units
 
         public void AddAbility(Ability ability)
         {
+            if (ability == null)
+            {
+                return;
+            }
             foreach (var mod in ability.mods)
             {
                 switch (mod.statType)
@@ -51,6 +55,10 @@ namespace MyTonaShooterTest.Units
 
         public void RemoveAbility(Ability ability)
         {
+            if (ability == null)
+            {
+                return;
+            }
             foreach (var mod in ability.mods)
             {
                 switch (mod.statType)

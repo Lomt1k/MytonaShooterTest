@@ -18,6 +18,8 @@ namespace MyTonaShooterTest.Weapons
         public float bulletLifetime = 1f; //время до уничтожения пули (визуал)
         public float bulletSpeed = 1500f; //скорость полета пули (визуал)
         public Sprite icon; //иконка оружия (для килл-листа)
+        public float explosiveRange; //радиус взрыва
+        public float explolsionTime; //время, которое будет отображаться взрыв
     }
 }
 

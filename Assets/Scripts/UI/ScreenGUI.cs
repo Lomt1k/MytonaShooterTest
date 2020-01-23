@@ -36,6 +36,7 @@ namespace MyTonaShooterTest.UI
         public Text results_kills_list;
         public Text reslts_deaths_list;
         public Text results_back_to_menu;
+        public Text grenades_text;
 
         public void UpdateHealthBar(float hp)
         {
@@ -58,6 +59,9 @@ namespace MyTonaShooterTest.UI
                 }
             }
             else ammoText.text = "";
+
+            //grenades
+            grenades_text.text = unit.weaponHolder.grenadeCount.ToString();
         }
 
         public void UpdatePlayerScore()
@@ -87,6 +91,7 @@ namespace MyTonaShooterTest.UI
             deathPanel.SetActive(true);
             healthBar.gameObject.SetActive(false);
             ammoText.gameObject.SetActive(false);
+            Cursor.visible = true;
         }
 
         public void RespawnButtonClick()
@@ -94,6 +99,7 @@ namespace MyTonaShooterTest.UI
             deathPanel.SetActive(false);
             healthBar.gameObject.SetActive(true);
             ammoText.gameObject.SetActive(true);
+            Cursor.visible = false;
             Player.mine.Respawn();
         }
 
@@ -106,6 +112,7 @@ namespace MyTonaShooterTest.UI
             tdm_panel.SetActive(false);
             killDeathPanel.SetActive(false);
             results_panel.SetActive(true);
+            Cursor.visible = true;
         }
 
         public void BackToMenuButton()
@@ -118,6 +125,7 @@ namespace MyTonaShooterTest.UI
         void Start()
         {
             _instance = this;
+            Cursor.visible = false;
         }
 
     }

@@ -31,37 +31,35 @@ namespace MyTonaShooterTest.Weapons
         /// вызывает попытку выстрелить из оружия
         /// </summary>
         /// <returns>Возвращает true в случае успешного выстрела</returns>
-        public virtual bool TryShot()
+        public virtual void TryShot()
         {
             if (isReloading)
             {
-                return false;
+                return;
             }
             if (_ammo <= 0)
             {
                 TryReload();
-                return false;
+                return;
             }
             if (Time.time < 1f / (weaponData.fireRate * _weaponOwner.unitStats.attackSpeed.value) + _lastShotTime)
             {
-                return false;
+                return;
             }
             Shot();
-            return true;
         }
 
         /// <summary>
         /// вызывает попытку перезарядить оружие
         /// </summary>
         /// <returns>Возвращает true в случае, если началась перезарядка</returns>
-        public virtual bool TryReload()
+        public virtual void TryReload()
         {
             if (isReloading || _ammo >= weaponData.magazineAmount)
             {
-                return false;
+                return;
             }
             StartCoroutine(Reload());
-            return true;
         }
 
         protected virtual void OnStart()

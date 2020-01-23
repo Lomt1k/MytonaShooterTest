@@ -15,6 +15,11 @@ namespace MyTonaShooterTest.UI
 
         public void ShowDeathMessage(string victim, Sprite icon = null, string killer = null)
         {
+            if (killer == victim)
+            {
+                killer = null; //если убил сам себя - поле убийцы пустое
+            }
+
             _lastActiveEvent++;
             if (_lastActiveEvent >= killListEvents.Length)
             {
