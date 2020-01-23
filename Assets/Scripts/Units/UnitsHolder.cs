@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using System.Collections.Generic;
 
 namespace MyTonaShooterTest.Units
 {
@@ -8,7 +6,7 @@ namespace MyTonaShooterTest.Units
     {
         public static List<Unit> units => _units;
 
-        static List<Unit> _units;
+        private static List<Unit> _units;
 
         static UnitsHolder()
         {

@@ -1,6 +1,7 @@
 ﻿using System;
 using UnityEngine;
 using UnityEngine.UI;
+using MyTonaShooterTest.Languages;
 
 public enum GameModeType : byte
 {
@@ -16,6 +17,13 @@ public class MainMenuUI : MonoBehaviour
     public InputField playersField;
     public InputField timeField;
     public Color selectedColor;
+    public Image langButtonImage;
+    public Sprite langImageEng;
+    public Sprite langImageRus;
+    public Text lang_inputFieldPlayers;
+    public Text lang_inputFieldTime;
+    public Text lang_playButton;
+    public Text lang_infoText;
 
     private GameModeType _selectedGameMode;
 
@@ -36,21 +44,19 @@ public class MainMenuUI : MonoBehaviour
     public void PlayButton()
     {
         //players
-        int players = 1;
+        int players = 4;
         if (!String.IsNullOrEmpty(playersField.text))
         {
             players = Convert.ToInt32(playersField.text);
-        }        
-        if (players < 1) players = 1;
-        else if (players > 8) players = 8;
+        }
+        players = Mathf.Clamp(players, 1, 12);
         //time
-        int time = 30;
+        int time = 180;
         if (!String.IsNullOrEmpty(timeField.text))
         {
             time = Convert.ToInt32(timeField.text);
         }
-        if (time < 30) time = 30;
-        else if (time > 900) time = 900;
+        time = Mathf.Clamp(time, 30, 900);
 
         sceneLoader.StartGame(_selectedGameMode, players, time);
     }
@@ -61,8 +67,42 @@ public class MainMenuUI : MonoBehaviour
         Application.Quit();
     }
 
+    public void SwitchLanguage()
+    {
+        switch (PlayerPrefs.GetString("Language", "English"))
+        {
+            case "Russian":
+                Language.ChangeLanguage("English");
+                break;
+            case "English":
+                Language.ChangeLanguage("Russian");
+                break;
+
+            default:
+                Language.ChangeLanguage("English");
+                break;
+        }
+
+    }
+
     private void Start()
     {
-        buttonDM.Select();
+        _selectedGameMode = GameModeType.DeathMatch;
+        buttonDM.image.color = selectedColor;
+
+        switch (PlayerPrefs.GetString("Language", "English"))
+        {
+            case "Russian":
+                langButtonImage.sprite = langImageRus;
+                break;
+            default:
+                langButtonImage.sprite = langImageEng;
+                break;
+        }
+
+        lang_inputFieldPlayers.text = Language.data["menu_inputFieldPlayers"];
+        lang_inputFieldTime.text = Language.data["menu_inputFieldTime"];
+        lang_playButton.text = Language.data["menu_playButton"];
+        lang_infoText.text = Language.data["menu_infoText"];
     }
 }

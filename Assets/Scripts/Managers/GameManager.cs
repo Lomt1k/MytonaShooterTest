@@ -1,27 +1,30 @@
 ﻿using System.Collections;
 using UnityEngine;
 using MyTonaShooterTest.VFX;
-using MyTonaShooterTest.UI;
 
 public class GameManager : MonoBehaviour
 {
     public GameObject rifleBulletPrefab;
+    public GameObject explosionPrefab;
 
     private static GameManager _instance;
     private GameMode _gameMode;
     private PoolManager<Bullet> _rifleBulletPool;
+    private PoolManager<Explosion> _explosionPool;
 
     public static GameManager instance => _instance;
     public GameMode gameMode => _gameMode;
     public PoolManager<Bullet> rifleBulletPool => _rifleBulletPool;
+    public PoolManager<Explosion> explosionPool => _explosionPool;
 
     
 
     private void Start()
     {
         _instance = this;
-        //инициализируем bulletPool
+        //инициализируем pool`ы
         _rifleBulletPool = new PoolManager<Bullet>(rifleBulletPrefab, 5);
+        _explosionPool = new PoolManager<Explosion>(explosionPrefab, 5);
 
         StartCoroutine(InitGameMode(1));
     }
@@ -50,7 +53,7 @@ public class GameManager : MonoBehaviour
         StartCoroutine(SecUpdate());
     }
 
-    public virtual IEnumerator SecUpdate()
+    protected virtual IEnumerator SecUpdate()
     {
         while (gameMode.timeToEnd > 0)
         {

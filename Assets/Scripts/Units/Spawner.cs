@@ -1,16 +1,13 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace MyTonaShooterTest.Units
 {
     public class Spawner : MonoBehaviour
     {
-        static Spawner _instance;
-
         public GameObject unitPrefab;
         public Transform[] unitSpawns;
 
+        private static Spawner _instance;
 
         public static Spawner instance
         {
@@ -34,7 +31,7 @@ namespace MyTonaShooterTest.Units
             return unit;
         }
 
-        void Start()
+        private void Start()
         {
             _instance = this;
         }

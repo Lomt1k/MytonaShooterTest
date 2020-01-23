@@ -1,12 +1,12 @@
-﻿using MyTonaShooterTest.UI;
+﻿using System.Linq;
+using System.Collections.Generic;
+using MyTonaShooterTest.UI;
 using MyTonaShooterTest.Weapons;
+using MyTonaShooterTest.Languages;
 using UnityEngine;
 
 public class DeathMatch : GameMode
 {
-    private Player killLeader; //лидер по фрагам (либо тот, кто первым сделал Х убийств, если есть несколько игроков с этим числом фрагов)
-    private int killLeader_kills;
-
     public DeathMatch(int players, int time) : base(players, time)
     {        
     }
@@ -30,27 +30,51 @@ public class DeathMatch : GameMode
     public override void OnPlayerDeath(Player player, Player killer = null, Weapon weapon = null)
     {
         base.OnPlayerDeath(player, killer, weapon);
-
-        //запоминание лидера по убийствам для отображения его в конце матча
-        if (killer != null && killer.kills > killLeader_kills)
-        {
-            killLeader_kills = killer.kills;
-            killLeader = killer;
-        }
+        KillMessage(player, killer, weapon);
     }
 
     public override void OnMatchEnd()
     {
-        Debug.Log($"Десматч завершен!");
-        if (killLeader != null)
-        {
-            Debug.Log($"Победил {killLeader.nickname} с {killLeader_kills} убийствами");
-        }
+        //сортируем игроков по наибольшему количеству убийств и наименьшему числу смертей
+        List<Player> sortedPlayers = players.OrderByDescending(x => x.kills).ThenBy(x => x.deaths).ToList();
 
-        foreach (Player player in players)
+        //отображаем результаты матча
+        ScreenGUI.instance.results_title.text = Language.data["dm_ends"];
+        string sub = string.Format(Language.data["dm_wins"], sortedPlayers[0].nickname, sortedPlayers[0].kills);            
+        ScreenGUI.instance.results_sub.text = sub;
+
+        ScreenGUI.instance.results_header_name.text = Language.data["dm_name"];
+        ScreenGUI.instance.results_header_kills.text = Language.data["screenGUI_kills"];
+        ScreenGUI.instance.results_header_deaths.text = Language.data["screenGUI_deaths"];
+        ScreenGUI.instance.results_back_to_menu.text = Language.data["screnGUI_backToMenu"];
+        
+        string list_names = "";
+        string list_kills = "";
+        string list_deaths = "";
+        foreach (Player player in sortedPlayers)
         {
-            string result = $"{player.nickname} | Kills: {player.kills} | Deaths: {player.deaths}";
-            Debug.Log(result);
-        }        
+            list_names += $"{player.nickname}\n";
+            list_kills += $"{player.kills}\n";
+            list_deaths += $"{player.deaths}\n";
+        }
+        ScreenGUI.instance.results_names_list.text = list_names;
+        ScreenGUI.instance.results_kills_list.text = list_kills;
+        ScreenGUI.instance.reslts_deaths_list.text = list_deaths;
     }
+
+    private void KillMessage(Player player, Player killer = null, Weapon weapon = null)
+    {
+        string killer_str = "";
+        if (killer != null)
+        {
+            killer_str = killer.nickname;
+        }
+        Sprite weapon_icon = null;
+        if (weapon != null)
+        {
+            weapon_icon = weapon.weaponData.icon;
+        }
+        KillList.instance.ShowDeathMessage(player.nickname, weapon_icon, killer_str);
+    }
+
 }

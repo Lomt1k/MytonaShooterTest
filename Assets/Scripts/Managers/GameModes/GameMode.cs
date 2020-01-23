@@ -30,6 +30,7 @@ public abstract class GameMode
         }
 
         ScreenGUI.instance.UpdateMatchTime(timeToEnd);
+        ScreenGUI.instance.UpdatePlayerScore();
         OnGameModeInit();
     }
 
@@ -64,7 +65,7 @@ public abstract class GameMode
             {
                 GameObject.Destroy(unit.gameObject);
             }
-            ScreenGUI.instance.gameObject.SetActive(false);
+            ScreenGUI.instance.ShowResultsMenu();
         }
     }
 

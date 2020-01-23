@@ -1,0 +1,24 @@
+{
+  "menu_inputFieldPlayers": "Players...",
+  "menu_inputFieldTime": "Time...",
+  "menu_playButton": "PLAY",
+  "menu_infoText": "Controls
+  ------------------------<color=white>
+  [W],[A],[S],[D] - movement
+  [LMB] - shooting [G] - grenade
+  [Mouse Wheel] - switch weapon</color>",
+  
+  "screenGUI_kills": "Kills",
+  "screenGUI_deaths": "Deaths",
+  "screenGUI_reloading": "[RELOADING]",
+  "screnGUI_backToMenu": "BACK TO MENU",
+
+  "dm_ends": "DeathMatch Ends",
+  "dm_wins": "{0} wins with {1} kills",
+  "dm_name": "Name",
+
+  "tdm_ends": "Team DeathMatch Ends",
+  "tdm_win_green": "<color=green>Green Team</color> wins (Score {0}:{1})",
+  "tdm_win_red": "<color=red>Red Team</color> wins (Score {0}:{1})",
+  "tdm_draw": "It`s draw (Score {0}:{1})",
+}

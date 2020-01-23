@@ -6,12 +6,12 @@ namespace MyTonaShooterTest.VFX
     public class Bullet : MonoBehaviour, IPoolObject
     {
         private float moveSpeed;
-        private float maxDistance = 1000f; //максимальная дистанция, которую пуля еще может пролететь (от shotDistance оружия)
+        private float distance = 1000f; //дистанция, которую пуля еще может пролететь (от shotDistance оружия)
 
         public void SetBulletInfo(float speed, float shotDistance)
         {
             moveSpeed = speed;
-            maxDistance = shotDistance;
+            distance = shotDistance;
         }
 
         public void SetBulletInfo(float speed, Vector3 hitPos)
@@ -20,7 +20,7 @@ namespace MyTonaShooterTest.VFX
             //вычисляем время до попадания пули в цель и уничтожаем её в тот момент
             float distance = Vector3.Distance(transform.position, hitPos);
             float timeToHit = distance / moveSpeed * Time.deltaTime;
-            StartCoroutine(DestroyBulletInTime(timeToHit));
+            StartCoroutine(DestroyInTime(timeToHit));
         }
 
 
@@ -38,11 +38,14 @@ namespace MyTonaShooterTest.VFX
         private void Update()
         {
             transform.Translate(-transform.forward * moveSpeed);
-            maxDistance -= moveSpeed;
-            if (maxDistance <= 0f) OnPush();
+            distance -= moveSpeed;
+            if (distance <= 0f)
+            {
+                OnPush();
+            }
         }
 
-        private IEnumerator DestroyBulletInTime(float time)
+        private IEnumerator DestroyInTime(float time)
         {
             yield return new WaitForSeconds(time);
             OnPush();
