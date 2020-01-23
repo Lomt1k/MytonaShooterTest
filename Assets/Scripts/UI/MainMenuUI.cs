@@ -20,6 +20,10 @@ public class MainMenuUI : MonoBehaviour
     public Image langButtonImage;
     public Sprite langImageEng;
     public Sprite langImageRus;
+    public Text lang_inputFieldPlayers;
+    public Text lang_inputFieldTime;
+    public Text lang_playButton;
+    public Text lang_infoText;
 
     private GameModeType _selectedGameMode;
 
@@ -95,5 +99,10 @@ public class MainMenuUI : MonoBehaviour
                 langButtonImage.sprite = langImageEng;
                 break;
         }
+
+        lang_inputFieldPlayers.text = Language.data["menu_inputFieldPlayers"];
+        lang_inputFieldTime.text = Language.data["menu_inputFieldTime"];
+        lang_playButton.text = Language.data["menu_playButton"];
+        lang_infoText.text = Language.data["menu_infoText"];
     }
 }

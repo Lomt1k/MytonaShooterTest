@@ -2,6 +2,11 @@
   "menu_inputFieldPlayers": "Игроков...",
   "menu_inputFieldTime": "Время...",
   "menu_playButton": "ИГРАТЬ",
+  "menu_infoText": "Управление
+  ------------------------<color=white>
+  [W],[A],[S],[D] - перемещение
+  [ЛКМ] - стрельба [G] - граната
+  [Колесико Мыши] - смена оружия</color>",
   
   "screenGUI_kills": "Убийств",
   "screenGUI_deaths": "Смертей",

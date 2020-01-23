@@ -48,7 +48,7 @@ public class GrenadeTrajectoryCalc : MonoBehaviour
         }
         lineRenderer.SetPositions(CalculatePoints(grenadeTransform.position, endPos));
 
-        //update grenade pos
+        //update visual grenade pos
         _weaponOwner.weaponHolder.armedGrenade.transform.position = positions[0];
     }
 
